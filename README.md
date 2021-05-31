@@ -4,13 +4,13 @@
 <details>
 <summary>Before</summary>
 <br>
-<img src="/Preview/home-before.png" width="400"/><img src="/Preview/add-before.png" width="400"/>
+<img src="https://i.imgur.com/x4Xu5xe.png" width="400"/><img src="https://i.imgur.com/NlPcLMF.png" width="400"/>
 </details>
 
 <details open>
 <summary>After</summary>
 <br>
-<img src="/Preview/home-after.png" width="400"/><img src="/Preview/add-after.png" width="400"/>
+<img src="https://i.imgur.com/fnbYLFi.png" width="400"/><img src="https://i.imgur.com/gklMTv5.png" width="400"/>
 </details>
 
 <br>
