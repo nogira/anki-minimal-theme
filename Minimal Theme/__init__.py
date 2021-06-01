@@ -24,11 +24,10 @@
 #
 # ------------------------------------------------------------------------------
 
-
 # give anki permissions to get files from addon folder
 from aqt import mw
 mw.addonManager.setWebExports(__name__, r"files/.*\.svg")
 
-
 from . import toolbar
 from . import append_css
+# from . import editor_buttons
