@@ -1,17 +1,6 @@
 # Minimal Theme
 
-
-<details>
-<summary>Before</summary>
-<br>
-<img src="https://i.imgur.com/x4Xu5xe.png" width="400"/><img src="https://i.imgur.com/NlPcLMF.png" width="400"/>
-</details>
-
-<details open>
-<summary>After</summary>
-<br>
-<img src="https://i.imgur.com/fnbYLFi.png" width="400"/><img src="https://i.imgur.com/gklMTv5.png" width="400"/>
-</details>
+<img src="https://i.imgur.com/pt9re5l.gif"/>
 
 <br>
 
