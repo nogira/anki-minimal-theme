@@ -29,5 +29,6 @@ from aqt import mw
 mw.addonManager.setWebExports(__name__, r"files/.*\.svg")
 
 from . import toolbar
+from . import editor_tags
 from . import append_css
 # from . import editor_buttons
