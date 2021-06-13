@@ -32,6 +32,10 @@ addon_path = os.path.dirname(__file__)
 addonfoldername = os.path.basename(addon_path)
 aqt.mw.addonManager.setWebExports(addonfoldername, r"files/.*\.(css|svg|js)")
 
+from aqt import mw
+config = mw.addonManager.getConfig(__name__)
+# example: config["night mode"]
+
 from aqt.editor import Editor
 from anki.hooks import wrap
 from aqt.qt import *
@@ -41,6 +45,7 @@ def editTagStyle(self) -> None:
     self.tags.setStyleSheet("border: 1px solid #d4d4d4;"
                             "border-radius: 3px;"
                             "box-shadow: inset 0px 2px 4px -2px rgba(0, 0, 0, 0.2);")
+        
     # goal to change self.outerLayout
     # -> self.outerLayout = QVBoxLayout()             (a VStack)
     #     │
@@ -70,7 +75,13 @@ def editTagStyle(self) -> None:
     # self.outerLayout.itemAt(1).widget().layout().setSizeConstraint(QLayout.SetMaximumSize)
     # self.outerLayout.itemAt(1).widget().layout().maximumSize()
 
-    self.outerLayout.itemAt(1).widget().layout().itemAt(0).widget().setText(f'<img src="{addon_path}/files/tags.svg" width="15">') # content: url("/files/tags.svg");
+    self.outerLayout.itemAt(1).widget().layout().itemAt(0).widget().setText(f'<img src="{addon_path}/files/tags.svg" width="15">')
 
     # self.outerLayout.itemAt(0).widget().deleteLater()
+
+    if config["night mode"]:
+        self.tags.setStyleSheet("border: 1px solid #646464;"
+                            "border-radius: 3px;"
+                            "box-shadow: inset 0px 2px 4px -2px rgba(0, 0, 0, 0.2);")
+        self.outerLayout.itemAt(1).widget().layout().itemAt(0).widget().setText(f'<img src="{addon_path}/files/tags_white.svg" width="15">')
 Editor.setupTags = wrap(Editor.setupTags, editTagStyle)

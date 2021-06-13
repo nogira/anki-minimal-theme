@@ -39,6 +39,9 @@ span.blabel div.rainbow {
     border-radius: 0px;
     height: 11px !important;
 }
+html.night-mode span.blabel div.rainbow {
+    content: url("eye_dropper_white.svg");
+}
 button[title="Cloze deletion (Command+Shift+C)"] img.topbut {
     content: url("cloze.svg");
 }
@@ -63,7 +66,15 @@ button.linkb {
 button.linkb img {
     height: 11px !important;
 }
-
+html.night-mode button.linkb {
+    -webkit-appearance: none;
+    background: #565656 !important;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    font-family: Helvetica;
+    height: 21px;
+    width: 18px;
+}
 
 /*       text       */
 
@@ -73,6 +84,10 @@ span.fieldname {
 
 .field {
     border: 1px solid #d4d4d4;
+    border-radius: 3px;
+}
+html.night-mode .field {
+    border: 1px solid #646464;
     border-radius: 3px;
 }
 

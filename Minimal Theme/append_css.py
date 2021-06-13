@@ -24,7 +24,6 @@
 #
 # ------------------------------------------------------------------------------
 
-from typing import Any, Optional
 import aqt
 aqt.mw.addonManager.setWebExports(__name__, r"files/.*\.(css|svg|js)")
 addon_package = aqt.mw.addonManager.addonFromModule(__name__)
@@ -42,40 +41,81 @@ from aqt.utils import showText
 #         js {List[str]} -- List of media server subpaths,
 #                           each pointing to a JS file
 
+from aqt import mw
+config = mw.addonManager.getConfig(__name__)
+# example: config["night mode"]
+
+from typing import Any, Optional
 def on_webview_will_set_content(
-    web_content: aqt.webview.WebContent, context: Optional[Any]
-) -> None:
+    web_content: aqt.webview.WebContent, context: Optional[Any]) -> None:
     # for all
     web_content.css.append(f"/_addons/{addon_package}/files/all.css")
     if isinstance(context, aqt.toolbar.TopToolbar):
-        web_content.css.append(f"/_addons/{addon_package}/files/top_toolbar.css")
-        # maybe the below things dont work because of some issue with python reading the text
-        # for example, the html text has a lot of quotation marks which would fuckup the string
-        web_content.body = web_content.body.replace("Shortcut key: D", "Decks\nShortcut: D")
-        web_content.body = web_content.body.replace("Shortcut key: A", "Add Card\nShortcut: A")
-        web_content.body = web_content.body.replace("Shortcut key: B", "Browse\nShortcut: B")
-        web_content.body = web_content.body.replace("Shortcut key: T", "Stats\nShortcut: T")
-        web_content.body = web_content.body.replace("Shortcut key: Y", "Sync\nShortcut: Y")
+        web_content.css.append(
+            f"/_addons/{addon_package}/files/top_toolbar.css")
+        # maybe the below things dont work because of some issue with python
+        # reading the text. for example, the html text has a lot of quotation
+        # marks which would fuckup the string
+        web_content.body = web_content.body.replace("Shortcut key: D",
+                                                    "Decks\nShortcut: D")
+        web_content.body = web_content.body.replace("Shortcut key: A",
+                                                    "Add Card\nShortcut: A")
+        web_content.body = web_content.body.replace("Shortcut key: B",
+                                                    "Browse\nShortcut: B")
+        web_content.body = web_content.body.replace("Shortcut key: T",
+                                                    "Stats\nShortcut: T")
+        web_content.body = web_content.body.replace("Shortcut key: Y",
+                                                    "Sync\nShortcut: Y")
     elif isinstance(context, aqt.deckbrowser.DeckBrowser):
-        web_content.css.append(f"/_addons/{addon_package}/files/home.css")
+        web_content.css.append(
+            f"/_addons/{addon_package}/files/home.css")
+        if not(config["show 'studied cards today' in homescreen"]):
+            web_content.css.append(
+                f"/_addons/{addon_package}/files/home_studiedToday.css")
     elif isinstance(context, aqt.toolbar.BottomToolbar):
         # this one doesnt work for some reason
-        web_content.css.append(f"/_addons/{addon_package}/files/bottom_toolbar.css")
+        web_content.css.append(
+            f"/_addons/{addon_package}/files/bottom_toolbar.css")
     elif isinstance(context, aqt.reviewer.ReviewerBottomBar):
-        web_content.css.append(f"/_addons/{addon_package}/files/reviewer_bottom.css")
+        web_content.css.append(
+            f"/_addons/{addon_package}/files/reviewer_bottom.css")
     elif isinstance(context, aqt.editor.Editor):
-        web_content.css.append(f"/_addons/{addon_package}/files/editor-window.css")
-        web_content.css.append(f"/_addons/{addon_package}/files/prism.css")
-        web_content.js.append(f"/_addons/{addon_package}/files/prism.js")
+        web_content.css.append(
+            f"/_addons/{addon_package}/files/editor-window.css")
+        web_content.css.append(
+            f"/_addons/{addon_package}/files/prism.css")
+        web_content.js.append(
+            f"/_addons/{addon_package}/files/prism.js")
         web_content.body = web_content.body.replace("Fields...", "Fields")
         web_content.body = web_content.body.replace("Cards...", "Cards")
-        # web_content.body = web_content.body.replace('<link rel="stylesheet" href="./_anki/css/editable.css">', '<link rel="stylesheet" href="./_anki/css/editable.css"><link rel="stylesheet" href="http://127.0.0.1:56940/_addons/FormatPackStylingRefresh/files/prism.css"><script src="http://127.0.0.1:56940/_addons/FormatPackStylingRefresh/files/prism.js"></script>')
+#         web_content.body = web_content.body.replace(
+#             '<link rel="stylesheet" href="./_anki/css/editable.css">',
+#             '<link rel="stylesheet" href="./_anki/css/editable.css"><link rel=\
+# "stylesheet" href="http://127.0.0.1:56940/_addons/FormatPackStylingRefresh/\
+# files/prism.css"><script src="http://127.0.0.1:56940/_addons/FormatPackStyling\
+# Refresh/files/prism.js"></script>')
         
         # try adding new js that runs after editor.js
         # web_content.js.append(f"/_addons/{addon_package}/files/tweak.js")
 
         # add script after html has loaded to make sure shadowroot is present
-        web_content.head += f'<script async src="/_addons/{addon_package}/files/tweak.js"></script>'
+        web_content.head += f'<script async src="/_addons/{addon_package}/files\
+/tweak.js"></script>'
+
+
+
+
+        # ---------------------------------------------------------------------------------------------------------------------------------------------------------
+        
+        # to make sure this javascript gets reloaded every time a new note is loaded, perhaps append the command to the end of the function that loads the note
+        
+        # assumimg i modify editor.py -> def loadNote
+        # potentially able to modify anki's own javascript??? !!
+
+        # ---------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
 
         # ---didnt work---
 
