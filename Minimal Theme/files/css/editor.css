@@ -1,0 +1,95 @@
+/* ---------https://github.com/tonsky/FiraCode--------- */
+@font-face {
+	font-family: "Fira Code";
+	src: url("../FiraCode-Regular.woff2") format("woff2");
+}
+
+:focus {
+    outline: none !important;
+}
+
+.card {
+	font-feature-settings: "ss02","ss04","ss06", "zero";
+	color: black;
+	background-color: white;
+}
+
+
+
+/* --------- divider --------- */
+
+hr {
+	border: none;
+	border-top: 2px solid #CDCDCD;
+	margin-top: 20px;
+	margin-bottom: 20px;
+}
+
+
+
+/* ---------- TABLES ---------- */
+
+.left_table {
+	font-size: 16px;
+	border: none;
+	padding: 2px;
+	border-collapse: collapse;
+}
+.left_table td{
+	border: 1px solid #b8b8b8;
+	padding: 3px;
+	padding-left: 5px; 
+	padding-right: 5px;
+	text-align: left;
+}
+
+
+.centre_table {
+	font-size: 16px;
+	border: none;
+	padding: 2px;
+	border-collapse: collapse;
+}
+.centre_table td{
+	border: 1px solid #b8b8b8;
+	padding: 3px;
+	padding-left: 5px; 
+	padding-right: 5px;
+	text-align: center;
+}
+
+
+
+/* ----------CODE SYNTAX STYLING BELOW---------- */
+
+pre {
+	padding: 1em !important;
+	margin: .5em 0 !important;
+	overflow: auto;
+	border-radius: 3px;
+	background: #f5f2f0;
+	white-space: pre;
+	text-align: left;
+	word-break: normal;
+	word-wrap: normal;
+	tab-size: 4;
+	hyphens: none;
+	box-sizing: content-box;
+	display: block;
+}
+code {
+	font-family: 'Fira Code', 'menlo', monospace !important;
+	line-height: 1.5;
+	tab-size: 4;
+	white-space: pre;
+	box-sizing: content-box;
+}
+code.shell {
+	font-size: 10px !important;
+}
+:not(pre) > code {
+    padding: .1em;
+    border-radius: .3em;
+    white-space: normal;
+	background: #f5f2f0;
+}

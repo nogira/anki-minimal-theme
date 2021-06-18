@@ -1,0 +1,21 @@
+button, button.linkb {
+    box-shadow: 0px 0.8px 2px -1px rgba(0, 0, 0, 0.6) !important;
+    border: 1px solid rgba(255, 255, 255, 0) !important;
+}
+html.night-mode button, html.night-mode button.linkb {
+    box-shadow: inset 0px 0px 0px 1px #646465 !important;
+    border: 1px solid #222223 !important;
+}
+
+:focus {
+    outline: none !important;
+}
+
+button:active {
+    color: white;
+    background: #1485FF !important;
+}
+html.night-mode button:active {
+    color: white;
+    background: #4A4A4A !important;
+}
