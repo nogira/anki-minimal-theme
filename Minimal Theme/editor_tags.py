@@ -24,13 +24,11 @@
 #
 # ------------------------------------------------------------------------------
 
-import aqt
-aqt.mw.addonManager.setWebExports(__name__, r"files/.*\.(css|svg|js)")
-addon_package = aqt.mw.addonManager.addonFromModule(__name__)
-import os
-addon_path = os.path.dirname(__file__)
-addonfoldername = os.path.basename(addon_path)
-aqt.mw.addonManager.setWebExports(addonfoldername, r"files/.*\.(css|svg|js)")
+from aqt import mw
+addonfolder = mw.addonManager.addonFromModule(__name__)
+
+from os import path
+addon_path = path.dirname(__file__)
 
 from aqt import mw
 config = mw.addonManager.getConfig(__name__)
@@ -38,7 +36,6 @@ config = mw.addonManager.getConfig(__name__)
 
 from aqt.editor import Editor
 from anki.hooks import wrap
-from aqt.qt import *
 # from aqt.utils import showText
 
 def editTagStyle(self) -> None:
@@ -63,7 +60,7 @@ def editTagStyle(self) -> None:
     # deletes tag field: self.outerLayout.itemAt(1).widget().deleteLater()
     # the QLabel !!!!!: self.outerLayout.itemAt(1).widget().layout().itemAt(0).widget()
     # showText(str(self.outerLayout.itemAt(1).widget().layout().itemAt(0).widget()))
-    # showText(str(QIcon(f"/_addons/{addon_package}/files/gear.svg").pixmap(QSize())))
+    # showText(str(QIcon(f"/_addons/{addonfolder}/files/gear.svg").pixmap(QSize())))
     
     # showText(addon_path)
     # q = QPixmap(f"{addon_path}/files/tags.png")
@@ -75,7 +72,7 @@ def editTagStyle(self) -> None:
     # self.outerLayout.itemAt(1).widget().layout().setSizeConstraint(QLayout.SetMaximumSize)
     # self.outerLayout.itemAt(1).widget().layout().maximumSize()
 
-    self.outerLayout.itemAt(1).widget().layout().itemAt(0).widget().setText(f'<img src="{addon_path}/files/tags.svg" width="15">')
+    self.outerLayout.itemAt(1).widget().layout().itemAt(0).widget().setText(f'<img src="{addon_path}/files/img/editor/tags.svg" width="15">')
 
     # self.outerLayout.itemAt(0).widget().deleteLater()
 
@@ -83,5 +80,5 @@ def editTagStyle(self) -> None:
         self.tags.setStyleSheet("border: 1px solid #646464;"
                             "border-radius: 3px;"
                             "box-shadow: inset 0px 2px 4px -2px rgba(0, 0, 0, 0.2);")
-        self.outerLayout.itemAt(1).widget().layout().itemAt(0).widget().setText(f'<img src="{addon_path}/files/tags_white.svg" width="15">')
+        self.outerLayout.itemAt(1).widget().layout().itemAt(0).widget().setText(f'<img src="{addon_path}/files/img/editor/tags_white.svg" width="15">')
 Editor.setupTags = wrap(Editor.setupTags, editTagStyle)

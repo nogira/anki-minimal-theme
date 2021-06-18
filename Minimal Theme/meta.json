@@ -1,1 +1,1 @@
-{"name": "Minimal Theme", "mod": 867316254, "min_point_version": 43, "max_point_version": 44, "branch_index": 0, "disabled": false, "conflicts": [], "update_enabled": true}
+{"name": "Minimal Theme", "mod": 867316254, "min_point_version": 43, "max_point_version": 44, "branch_index": 0, "disabled": false, "conflicts": [], "update_enabled": true, "config": {"night mode": false, "show 'studied cards today' in homescreen": false}}
