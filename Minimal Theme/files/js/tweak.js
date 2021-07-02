@@ -19,7 +19,7 @@ function main_func() {
         // browse, only add if not present (i.e. child nodes < 4)
         if (node.childElementCount < 4) {
             node.insertBefore(new3, node.childNodes[1]);
-            alert('added css');
+            // alert('added css');
         };
         
     };
