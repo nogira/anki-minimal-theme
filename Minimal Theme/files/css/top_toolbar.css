@@ -7,11 +7,14 @@
 a svg {
     opacity: 0.7;
     height: 16px;
-    padding-left: 20px !important;
-    padding-right: 20px !important;
     padding-top: 4px;
     padding-bottom: 3px;
 }
+a {
+    padding-left: 20px !important;
+    padding-right: 20px !important;
+}
+
 /* this is to cancel the default css for #sync-spinner */
 svg#sync-spinner {
     visibility: visible !important;
