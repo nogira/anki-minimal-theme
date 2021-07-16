@@ -1,4 +1,5 @@
 .DS_Store
-*.addon
+*.ankiaddon
 *.zip
 other
+meta.json
