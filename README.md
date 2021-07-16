@@ -2,7 +2,7 @@
 
 **✨ ☞ [Install](https://ankiweb.net/shared/info/867316254) ☜ ✨**
 
-<img src="https://i.imgur.com/PGBKjhA.gif"/>
+<img src="https://imgur.com/ExCPDUe.png"/>
 
 <br>
 
