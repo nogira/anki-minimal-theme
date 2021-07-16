@@ -1,100 +1,51 @@
 
 /*       top buttons       */
 
-button#bold img.topbut {
-    content: url("../img/editor/bold.svg");
+button {
+    --border-left-radius: var(--btn-corner);
+    --border-right-radius: var(--btn-corner);
 }
-button#italic img.topbut {
-    content: url("../img/editor/italic.svg");
+.btn {
+    background: var(--btn-bg-color);
+    height: var(--editor-btn-height) !important; /* was 24px */
+    --icon-size: 50% !important;
+    margin-left: 0px !important;
+    margin-left: 1px !important;
+    margin-right: 1px !important;
 }
-button#underline img.topbut {
-    content: url("../img/editor/underline.svg");
-}
-button#superscript img.topbut {
-    content: url("../img/editor/superscript.svg");
-}
-button#subscript img.topbut {
-    content: url("../img/editor/subscript.svg");
-}
-button[title="Remove formatting (Command+R)"] img.topbut {
-    content: url("../img/editor/remove_html.svg");
+svg.icn-dmns {
+    top: calc(((100% - var(--icon-size)) / 2) - 1%) !important;
+    bottom: calc(((100% - var(--icon-size)) / 2) + 1%) !important;
 }
 
-/* doesnt work */
-div#forecolor {
-    /* clip-path: url("highlighter.svg"); need to use the actual 
-    path which is done below*/ 
-    clip-path: path("M 0 479.98 L 99.92 512 L 35.45 -35.45 L -67.04 -67.04 z");
-    border-radius: 2px !important;
-    height: 11px !important;
-    width: 11px !important;
-    margin-left: 2px;
-    margin-right: 2px;
+div#notetype button {
+    padding-left: 6px !important;  /* was 8px */
+    padding-right: 6px !important;  /* was 8px */
 }
 
-span.blabel div.rainbow {
-    content: url("../img/editor/eye_dropper.svg");
-    background-image: none;
-    display: none;
-    border-radius: 0px;
-    height: 11px !important;
+.dropdown-menu {
+    border: none;
+    box-shadow: var(--btn-shadow) !important;
 }
-html.night-mode span.blabel div.rainbow {
-    content: url("../img/editor/eye_dropper_white.svg");
+button.dropdown-item {
+    box-shadow: none !important;
 }
-button[title="Cloze deletion (Command+Shift+C)"] img.topbut {
-    content: url("../img/editor/cloze.svg");
-}
-button[title="Attach pictures/audio/video (F3)"] img.topbut {
-    content: url("../img/editor/paperclip.svg");
-}
-button[title="Record audio (F5)"] img.topbut {
-    content: url("../img/editor/record.svg");
-}
-button[onclick="pycmd('more');return false;"] img.topbut {
-    content: url("../img/editor/more.svg");
+
+nav {
+    border-bottom: var(--border-sep-btns-from-fields) !important;
 }
 
 
-button.linkb {
-    -webkit-appearance: none;
-    background: #fff;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    font-family: Helvetica;
-}
-button.linkb img {
-    height: 11px !important;
-}
-html.night-mode button.linkb {
-    -webkit-appearance: none;
-    background: #565656 !important;
-    border: 1px solid #ccc;
-    border-radius: 3px;
-    font-family: Helvetica;
-    height: 21px;
-    width: 18px;
-}
-
-/*       text       */
+/*       FIELD       */
 
 span.fieldname {
     font-size: 13px;
 }
 
 .field {
-    border: 1px solid #d4d4d4;
+    border: 1px solid var(--field-border-color);
     border-radius: 3px;
-}
-html.night-mode .field {
-    border: 1px solid #646464;
-    border-radius: 3px;
-}
 
-
-/*       shadow       */
-
-.field {
     /* offset-x | offset-y | blur-radius | spread-radius | color */
     box-shadow: inset 0px 2px 4px -2px rgba(0, 0, 0, 0.2);
 }

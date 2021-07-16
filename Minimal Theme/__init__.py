@@ -26,7 +26,7 @@
 
 # give anki permissions to get files from addon folder
 from aqt import mw
-mw.addonManager.setWebExports(__name__, r"files/.*\.(css|svg|js)")
+mw.addonManager.setWebExports(__name__, r"files/.*\.(css|svg|js|woff2)")
 
 from . import editor_tags
 from . import append_css

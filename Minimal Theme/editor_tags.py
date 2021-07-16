@@ -30,12 +30,9 @@ addonfolder = mw.addonManager.addonFromModule(__name__)
 from os import path
 addon_path = path.dirname(__file__)
 
-from aqt import mw
-config = mw.addonManager.getConfig(__name__)
-# example: config["night mode"]
-
 from aqt.editor import Editor
 from anki.hooks import wrap
+from aqt.theme import theme_manager
 # from aqt.utils import showText
 
 def editTagStyle(self) -> None:
@@ -76,7 +73,7 @@ def editTagStyle(self) -> None:
 
     # self.outerLayout.itemAt(0).widget().deleteLater()
 
-    if config["night mode"]:
+    if theme_manager.get_night_mode():
         self.tags.setStyleSheet("border: 1px solid #646464;"
                             "border-radius: 3px;"
                             "box-shadow: inset 0px 2px 4px -2px rgba(0, 0, 0, 0.2);")
