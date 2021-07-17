@@ -28,6 +28,5 @@
 from aqt import mw
 mw.addonManager.setWebExports(__name__, r"files/.*\.(css|svg|js|woff2)")
 
-from . import editor_tags
-from . import append_css
-# from . import editor_buttons
+from .files import editor_tags
+from .files import add_html_css_js

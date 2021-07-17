@@ -1,7 +1,7 @@
-// get filepath of tweak.js then modify that filepath to get filepath of editor.css
+// get filepath of editor_theme.js then modify that filepath to get filepath of editor.css
 var script = document.currentScript;
 var fullUrl = script.src;
-newpath = fullUrl.replace("js/tweak.js", "css/editor.css");
+newpath = fullUrl.replace("js/editor_theme.js", "css/editor.css");
 //alert(newpath);
 
 // html.night-mode

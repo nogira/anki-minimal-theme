@@ -24,9 +24,6 @@
 #
 # ------------------------------------------------------------------------------
 
-from aqt import mw
-addonfolder = mw.addonManager.addonFromModule(__name__)
-
 from os import path
 addon_path = path.dirname(__file__)
 
@@ -69,7 +66,7 @@ def editTagStyle(self) -> None:
     # self.outerLayout.itemAt(1).widget().layout().setSizeConstraint(QLayout.SetMaximumSize)
     # self.outerLayout.itemAt(1).widget().layout().maximumSize()
 
-    self.outerLayout.itemAt(1).widget().layout().itemAt(0).widget().setText(f'<img src="{addon_path}/files/img/editor/tags.svg" width="15">')
+    self.outerLayout.itemAt(1).widget().layout().itemAt(0).widget().setText(f'<img src="{addon_path}/img/tags.svg" width="15">')
 
     # self.outerLayout.itemAt(0).widget().deleteLater()
 
@@ -77,5 +74,5 @@ def editTagStyle(self) -> None:
         self.tags.setStyleSheet("border: 1px solid #646464;"
                             "border-radius: 3px;"
                             "box-shadow: inset 0px 2px 4px -2px rgba(0, 0, 0, 0.2);")
-        self.outerLayout.itemAt(1).widget().layout().itemAt(0).widget().setText(f'<img src="{addon_path}/files/img/editor/tags_white.svg" width="15">')
+        self.outerLayout.itemAt(1).widget().layout().itemAt(0).widget().setText(f'<img src="{addon_path}/img/tags_white.svg" width="15">')
 Editor.setupTags = wrap(Editor.setupTags, editTagStyle)

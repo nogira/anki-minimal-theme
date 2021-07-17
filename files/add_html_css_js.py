@@ -27,11 +27,11 @@
 from aqt import mw
 addonfolder = mw.addonManager.addonFromModule(__name__)
 
-# for debugging since cant use print
-from aqt.utils import showText
-
 config = mw.addonManager.getConfig(__name__)
 # example: config["night mode"]
+
+# for debugging since cant use print
+from aqt.utils import showText
 
 from aqt.webview import WebContent
 from aqt.toolbar import TopToolbar, BottomToolbar
@@ -91,7 +91,10 @@ def on_webview_will_set_content(
         
         # add script after html has loaded to make sure shadowroot is present
         web_content.head += f'<script async src="/_addons/{addonfolder}/files\
-/js/tweak.js"></script>'
+/js/editor_theme.js"></script>'
+#         # script to add editor buttons
+#         web_content.head += f'<script async src="/_addons/{addonfolder}/files\
+# /js/new_buttons.js"></script>'
 
 
 webview_will_set_content.append(on_webview_will_set_content)
