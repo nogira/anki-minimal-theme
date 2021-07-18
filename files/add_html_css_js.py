@@ -24,18 +24,8 @@
 #
 # ------------------------------------------------------------------------------
 
-from aqt import mw
-addonfolder = mw.addonManager.addonFromModule(__name__)
+from .common_imports import *
 
-from os import path
-addon_path = path.dirname(__file__)
-
-import json
-config = json.load(open(f'{addon_path}/../user_files/config.json', 'r'))
-# example: config["night mode"]
-
-# for debugging since cant use print
-from aqt.utils import showText
 
 from aqt.webview import WebContent
 from aqt.toolbar import TopToolbar, BottomToolbar

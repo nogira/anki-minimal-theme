@@ -24,13 +24,12 @@
 #
 # ------------------------------------------------------------------------------
 
-from os import path
-addon_path = path.dirname(__file__)
+from .common_imports import *
+
 
 from aqt.editor import Editor
 from anki.hooks import wrap
 from aqt.theme import theme_manager
-# from aqt.utils import showText
 
 def editTagStyle(self) -> None:
     self.tags.setStyleSheet("border: 1px solid #d4d4d4;"

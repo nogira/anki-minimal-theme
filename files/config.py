@@ -24,11 +24,10 @@
 #
 # ------------------------------------------------------------------------------
 
-from os import path
-addon_path = path.dirname(__file__)
+from .common_imports import *
+
 
 from aqt.qt import QMainWindow, QVBoxLayout, QCheckBox, QLabel, QPushButton, QWidget
-import json
 
 # check if config file exists, of not, create it
 try:
@@ -84,9 +83,8 @@ class ConfigWindow(QMainWindow):
         
         self.close()
 
-
 # get the addon window instance
-from aqt import dialogs, mw
+from aqt import dialogs
 
 # open new window (ConfigWindow) linked to anki main window (mw) so it doesn't auto-close
 def show_new_window():
