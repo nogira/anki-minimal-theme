@@ -30,9 +30,32 @@ addon_path = path.dirname(__file__)
 from aqt import mw
 addonfolder = mw.addonManager.addonFromModule(__name__)
 
+# for debugging since cant use print
+from aqt.utils import showText
+
 import json
+
+# check if config file exists, of not, create it
+try:
+    with open(f'{addon_path}/../user_files/config.json', 'r') as file:
+        pass
+except:
+    with open(f'{addon_path}/../user_files/config.json', 'w') as file:
+        dict1 = {
+            "show 'studied cards today' in homescreen": False,
+            "code languages": {"Python": "py", "SQL": "sql", "None": "none"}
+        }
+        json.dump(dict1, file)
+
 config = json.load(open(f'{addon_path}/../user_files/config.json', 'r'))
 # example: config["night mode"]
 
-# for debugging since cant use print
-from aqt.utils import showText
+try:
+    config["show 'studied cards today' in homescreen"]
+except:
+    config["show 'studied cards today' in homescreen"] = False
+
+try:
+    config['code languages']
+except:
+    config['code languages'] = {"Python": "py", "SQL": "sql"}

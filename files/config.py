@@ -29,39 +29,18 @@ from .common_imports import *
 
 from aqt.qt import QMainWindow, QVBoxLayout, QCheckBox, QLabel, QPushButton, QWidget, QPlainTextEdit
 
-# check if config file exists, of not, create it
-try:
-    with open(f'{addon_path}/../user_files/config.json', 'r') as file:
-        pass
-except:
-    with open(f'{addon_path}/../user_files/config.json', 'w') as file:
-        dict1 = {
-            "show 'studied cards today' in homescreen": False,
-            "code languages": {"Python": "py", "SQL": "sql"}
-        }
-        json.dump(dict1, file)
-
 class ConfigWindow(QMainWindow):
     def __init__(self):
         super().__init__()
         self.setWindowTitle("Minimal Theme Settings")
         layout = QVBoxLayout()
 
-        self.dict_file = json.load(open(f'{addon_path}/../user_files/config.json', 'r'))
-
-        try:
-            self.dict_file["show 'studied cards today' in homescreen"]
-        except:
-            self.dict_file["show 'studied cards today' in homescreen"] = False
-        try:
-            self.dict_file['code languages']
-        except:
-            self.dict_file['code languages'] = {"Python": "py", "SQL": "sql"}
+        global config
 
         # ----------------------------------------------------------------------
 
         self.opt1 = QCheckBox("Show 'studied cards today' in homescreen.")
-        self.opt1.setChecked(self.dict_file["show 'studied cards today' in homescreen"])
+        self.opt1.setChecked(config["show 'studied cards today' in homescreen"])
         layout.addWidget(self.opt1)
 
         space = QLabel(" ")
@@ -72,7 +51,7 @@ class ConfigWindow(QMainWindow):
 
         self.text_box = QPlainTextEdit()
         temp_code_list = []
-        for key, value in self.dict_file['code languages'].items():
+        for key, value in config['code languages'].items():
             temp_code_list.append(key+","+value)
         self.text_box.insertPlainText('\n'.join(temp_code_list))
         layout.addWidget(self.text_box)
@@ -98,19 +77,20 @@ class ConfigWindow(QMainWindow):
         self.save_to_file()
 
     def save_to_file(self):
-        self.dict_file["show 'studied cards today' in homescreen"] = self.opt1.isChecked()
+        global config
+
+        config["show 'studied cards today' in homescreen"] = self.opt1.isChecked()
 
         # remove code values from dict so when re-added the order of the items is able to be updated too
-        self.dict_file['code languages'] = {}
+        config['code languages'] = {}
         langs = self.text_box.toPlainText().split('\n')
-        showText(str(langs))
         for lang in langs:
             name, id = lang.split(',')
-            self.dict_file['code languages'][name] = id
+            config['code languages'][name] = id
 
 
         with open(f'{addon_path}/../user_files/config.json', 'w') as file:
-            json.dump(self.dict_file, file)
+            json.dump(config, file)
 
 
         # DeckBrowser.refresh()
