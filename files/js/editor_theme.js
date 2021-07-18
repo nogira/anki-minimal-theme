@@ -1,3 +1,14 @@
+
+function addPre(lang) {
+    var input = window.getSelection();
+    // document.execCommand( "copy", false, "" );
+    document.execCommand("insertHTML", false, `<pre><code class="lang-${lang}">${input}</code></pre>\n` );
+
+}
+
+
+
+
 // get filepath of editor_theme.js then modify that filepath to get filepath of editor.css
 var script = document.currentScript;
 var fullUrl = script.src;
@@ -24,6 +35,8 @@ function main_func() {
         };
         
     };
+
+    // ----------------------------MODIFY BUTTON CSS----------------------------
 
     // var field_button = document.querySelector("#notetype > div > div:nth-child(1) > button").innerHTML;
     // alert(field_button)
@@ -93,13 +106,13 @@ function main_func() {
     let record_icon = '<!--Font Awesome Pro License https://fontawesome.com/license--><svg aria-hidden="true" focusable="false" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 352 512" class="icn-dmns"><path fill="currentColor" d="M336 192h-16c-8.84 0-16 7.16-16 16v48c0 74.8-64.49 134.82-140.79 127.38C96.71 376.89 48 317.11 48 250.3V208c0-8.84-7.16-16-16-16H16c-8.84 0-16 7.16-16 16v40.16c0 89.64 63.97 169.55 152 181.69V464H96c-8.84 0-16 7.16-16 16v16c0 8.84 7.16 16 16 16h160c8.84 0 16-7.16 16-16v-16c0-8.84-7.16-16-16-16h-56v-33.77C285.71 418.47 352 344.9 352 256v-48c0-8.84-7.16-16-16-16zM176 352c53.02 0 96-42.98 96-96V96c0-53.02-42.98-96-96-96S80 42.98 80 96v160c0 53.02 42.98 96 96 96zM128 96c0-26.47 21.53-48 48-48s48 21.53 48 48v160c0 26.47-21.53 48-48 48s-48-21.53-48-48V96z" class=""></path></svg>'
     document.querySelector("svg.bi-mic").parentElement.innerHTML = record_icon
 
-    let cloze_icon = '<!--Font Awesome Pro License https://fontawesome.com/license--><svg class="icn-dmns" width="100%" height="100%" viewBox="0 0 448 512" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;"><path fill="currentColor" d="M128,32L32,32C14.445,32 -0,46.445 0,64L0,448C0,465.555 14.445,480 32,480L128,480C136.777,480 144,472.777 144,464L144,448C144,439.223 136.777,432 128,432L48,432L48,80L128,80C136.777,80 144,72.777 144,64L144,48C144,39.223 136.777,32 128,32ZM416,32L320,32C311.223,32 304,39.223 304,48L304,64C304,72.777 311.223,80 320,80L400,80L400,432L320,432C311.223,432 304,439.223 304,448L304,464C304,472.777 311.223,480 320,480L416,480C433.555,480 448,465.555 448,448L448,64C448,46.445 433.555,32 416,32Z" style="fill-rule:nonzero;"/><g transform="matrix(0.791667,0,0,0.791667,80,280.471)"><path fill="currentColor" d="M48,48C21.668,48 -0,69.668 0,96C0,122.332 21.668,144 48,144C74.332,144 96,122.332 96,96C96,69.668 74.332,48 48,48Z" style="fill-rule:nonzero;"/></g><g transform="matrix(0.791667,0,0,0.791667,292,280.471)"><path fill="currentColor" d="M48,48C21.668,48 -0,69.668 0,96C0,122.332 21.668,144 48,144C74.332,144 96,122.332 96,96C96,69.668 74.332,48 48,48Z" style="fill-rule:nonzero;"/></g><g transform="matrix(0.791667,0,0,0.791667,186,280.471)"><path fill="currentColor" d="M48,48C21.668,48 -0,69.668 0,96C0,122.332 21.668,144 48,144C74.332,144 96,122.332 96,96C96,69.668 74.332,48 48,48Z" style="fill-rule:nonzero;"/></g></svg>'
-    document.querySelector("svg.#mdi-contain").parentElement.innerHTML = cloze_icon
+    // let cloze_icon = '<!--Font Awesome Pro License https://fontawesome.com/license--><svg class="icn-dmns" width="100%" height="100%" viewBox="0 0 448 512" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;"><path fill="currentColor" d="M128,32L32,32C14.445,32 -0,46.445 0,64L0,448C0,465.555 14.445,480 32,480L128,480C136.777,480 144,472.777 144,464L144,448C144,439.223 136.777,432 128,432L48,432L48,80L128,80C136.777,80 144,72.777 144,64L144,48C144,39.223 136.777,32 128,32ZM416,32L320,32C311.223,32 304,39.223 304,48L304,64C304,72.777 311.223,80 320,80L400,80L400,432L320,432C311.223,432 304,439.223 304,448L304,464C304,472.777 311.223,480 320,480L416,480C433.555,480 448,465.555 448,448L448,64C448,46.445 433.555,32 416,32Z" style="fill-rule:nonzero;"/><g transform="matrix(0.791667,0,0,0.791667,80,280.471)"><path fill="currentColor" d="M48,48C21.668,48 -0,69.668 0,96C0,122.332 21.668,144 48,144C74.332,144 96,122.332 96,96C96,69.668 74.332,48 48,48Z" style="fill-rule:nonzero;"/></g><g transform="matrix(0.791667,0,0,0.791667,292,280.471)"><path fill="currentColor" d="M48,48C21.668,48 -0,69.668 0,96C0,122.332 21.668,144 48,144C74.332,144 96,122.332 96,96C96,69.668 74.332,48 48,48Z" style="fill-rule:nonzero;"/></g><g transform="matrix(0.791667,0,0,0.791667,186,280.471)"><path fill="currentColor" d="M48,48C21.668,48 -0,69.668 0,96C0,122.332 21.668,144 48,144C74.332,144 96,122.332 96,96C96,69.668 74.332,48 48,48Z" style="fill-rule:nonzero;"/></g></svg>'
+    // document.querySelector("svg.#mdi-contain").parentElement.innerHTML = cloze_icon
 
     let func_icon = '<!--Font Awesome Pro License https://fontawesome.com/license--><svg aria-hidden="true" focusable="false" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512" class="icn-dmns"><path fill="currentColor" d="M224 48c0-8.84-7.16-16-16-16h-48c-48.6 0-88 39.4-88 88v48H16c-8.84 0-16 7.16-16 16v16c0 8.84 7.16 16 16 16h56v144c0 22.09-17.91 40-40 40H16c-8.84 0-16 7.16-16 16v16c0 8.84 7.16 16 16 16h16c48.6 0 88-39.4 88-88V216h56c8.84 0 16-7.16 16-16v-16c0-8.84-7.16-16-16-16h-56v-48c0-22.09 17.91-40 40-40h48c8.84 0 16-7.16 16-16V48zm93.43 60.92l-12.8-9.63c-7.22-5.44-17.81-4.01-22.92 3.41C244.39 157 224 222.17 224 288c0 65.85 20.39 131.02 57.71 185.3 5.11 7.43 15.7 8.85 22.92 3.41l12.8-9.63c6.84-5.14 8.09-14.54 3.28-21.59C289.2 399.27 272 343.92 272 288c0-55.91 17.2-111.26 48.71-157.5 4.8-7.05 3.55-16.44-3.28-21.58zm264.86-6.22c-5.11-7.43-15.7-8.85-22.92-3.41l-12.8 9.63c-6.84 5.14-8.09 14.54-3.28 21.59C574.8 176.73 592 232.08 592 288c0 55.91-17.2 111.26-48.71 157.5-4.8 7.05-3.55 16.44 3.28 21.59l12.8 9.63c7.22 5.44 17.81 4.02 22.92-3.41C619.61 419 640 353.83 640 288c0-65.85-20.39-131.02-57.71-185.3zm-74.84 120.84l-10.99-10.99c-6.07-6.07-15.91-6.07-21.98 0L432 255.03l-42.47-42.47c-6.07-6.07-15.91-6.07-21.98 0l-10.99 10.99c-6.07 6.07-6.07 15.91 0 21.98L399.03 288l-42.47 42.47c-6.07 6.07-6.07 15.91 0 21.98l10.99 10.99c6.07 6.07 15.91 6.07 21.98 0L432 320.97l42.47 42.47c6.07 6.07 15.91 6.07 21.98 0l10.99-10.99c6.07-6.07 6.07-15.91 0-21.98L464.97 288l42.47-42.47c6.08-6.07 6.08-15.92.01-21.99z" class=""></path></svg>'
     document.querySelector("svg#mdi-function-variant").parentElement.innerHTML = func_icon
 
-    let html_icon = '<!--Font Awesome Pro License https://fontawesome.com/license--><svg aria-hidden="true" focusable="false" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" class="icn-dmns"><path fill="currentColor" d="M149.9 349.1l-.2-.2-32.8-28.9 32.8-28.9c3.6-3.2 4-8.8.8-12.4l-.2-.2-17.4-18.6c-3.4-3.6-9-3.7-12.4-.4l-57.7 54.1c-3.7 3.5-3.7 9.4 0 12.8l57.7 54.1c1.6 1.5 3.8 2.4 6 2.4 2.4 0 4.8-1 6.4-2.8l17.4-18.6c3.3-3.5 3.1-9.1-.4-12.4zm220-251.2L286 14C277 5 264.8-.1 252.1-.1H48C21.5 0 0 21.5 0 48v416c0 26.5 21.5 48 48 48h288c26.5 0 48-21.5 48-48V131.9c0-12.7-5.1-25-14.1-34zM256 51.9l76.1 76.1H256zM336 464H48V48h160v104c0 13.3 10.7 24 24 24h104zM209.6 214c-4.7-1.4-9.5 1.3-10.9 6L144 408.1c-1.4 4.7 1.3 9.6 6 10.9l24.4 7.1c4.7 1.4 9.6-1.4 10.9-6L240 231.9c1.4-4.7-1.3-9.6-6-10.9zm24.5 76.9l.2.2 32.8 28.9-32.8 28.9c-3.6 3.2-4 8.8-.8 12.4l.2.2 17.4 18.6c3.3 3.5 8.9 3.7 12.4.4l57.7-54.1c3.7-3.5 3.7-9.4 0-12.8l-57.7-54.1c-3.5-3.3-9.1-3.2-12.4.4l-17.4 18.6c-3.3 3.5-3.1 9.1.4 12.4z" class=""></path></svg>'
+    let html_icon = '<!--Font Awesome Pro License https://fontawesome.com/license--><svg aria-hidden="true" focusable="false" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512" class="icn-dmns"><path fill="currentColor" d="M234.8 511.7L196 500.4c-4.2-1.2-6.7-5.7-5.5-9.9L331.3 5.8c1.2-4.2 5.7-6.7 9.9-5.5L380 11.6c4.2 1.2 6.7 5.7 5.5 9.9L244.7 506.2c-1.2 4.3-5.6 6.7-9.9 5.5zm-83.2-121.1l27.2-29c3.1-3.3 2.8-8.5-.5-11.5L72.2 256l106.1-94.1c3.4-3 3.6-8.2.5-11.5l-27.2-29c-3-3.2-8.1-3.4-11.3-.4L2.5 250.2c-3.4 3.2-3.4 8.5 0 11.7L140.3 391c3.2 3 8.2 2.8 11.3-.4zm284.1.4l137.7-129.1c3.4-3.2 3.4-8.5 0-11.7L435.7 121c-3.2-3-8.3-2.9-11.3.4l-27.2 29c-3.1 3.3-2.8 8.5.5 11.5L503.8 256l-106.1 94.1c-3.4 3-3.6 8.2-.5 11.5l27.2 29c3.1 3.2 8.1 3.4 11.3.4z" class=""></path></svg>'
     document.querySelector("svg#mdi-xml").parentElement.innerHTML = html_icon
 
     // -------------------------------------------------------------------------
@@ -109,6 +122,28 @@ function main_func() {
     for (i = 0; i != (pin_elements.length); i++) {
             pin_elements[i].parentElement.innerHTML = pin_icon
     }
+
+    // -------------------------------ADD BUTTONS-------------------------------
+
+    var node = document.querySelector("div#blockFormatting div.btn-group.svelte-1x2qjkh");
+
+    button = document.createElement("div");
+    button.setAttribute("class", " svelte-13ncvxj");
+    codeblock_icon = '<!--Font Awesome Pro License https://fontawesome.com/license--><svg aria-hidden="true" focusable="false" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512" class="icn-dmns"><path fill="currentColor" d="M208 32h-88a56 56 0 0 0-56 56v77.49a40 40 0 0 1-11.72 28.29L7 239a24 24 0 0 0 0 34l45.24 45.24A40 40 0 0 1 64 346.52V424a56 56 0 0 0 56 56h88a16 16 0 0 0 16-16v-16a16 16 0 0 0-16-16h-88a8 8 0 0 1-8-8v-77.48a88.06 88.06 0 0 0-25.78-62.24L57.93 256l28.29-28.28A88.06 88.06 0 0 0 112 165.48V88a8 8 0 0 1 8-8h88a16 16 0 0 0 16-16V48a16 16 0 0 0-16-16zm361 207l-45.25-45.24A40.07 40.07 0 0 1 512 165.48V88a56 56 0 0 0-56-56h-88a16 16 0 0 0-16 16v16a16 16 0 0 0 16 16h88a8 8 0 0 1 8 8v77.48a88 88 0 0 0 25.78 62.24L518.06 256l-28.28 28.28A88 88 0 0 0 464 346.52V424a8 8 0 0 1-8 8h-88a16 16 0 0 0-16 16v16a16 16 0 0 0 16 16h88a56 56 0 0 0 56-56v-77.49a40 40 0 0 1 11.72-28.29L569 273a24 24 0 0 0 0-34z" class=""></path></svg>'
+    button.innerHTML = `<div class="dropdown svelte-13ncvxj">
+                            <button class="btn dropdown-toggle btn-day svelte-9lxpor" dropdown="true" data-bs-toggle="dropdown" tabindex="-1" style="--icon-size: 75%;" aria-expanded="false">
+                                <span style="--width-multiplier: 1;" class="svelte-9lxpor"><!--Font Awesome Pro License https://fontawesome.com/license-->
+                                    ${codeblock_icon}
+                                </span>
+                            </button>
+                            <div class="dropdown-menu svelte-9q3irh">
+                                <button class="btn dropdown-item svelte-u5csu6 btn-day" onclick="addPre('py');">Python</button>
+                                <button class="btn dropdown-item svelte-u5csu6 btn-day">Shell</button>
+                                <button class="btn dropdown-item svelte-u5csu6 btn-day">Javascript</button>
+                                <button class="btn dropdown-item svelte-u5csu6 btn-day">SQL</button>
+                            </div>
+                        </div>`
+    node.appendChild(button); 
 };
 //                function    ms
 window.setTimeout(main_func, 100) //usually when you start the anki app it doesn't load the first time from mutation, so using time delay for the first load
@@ -141,3 +176,11 @@ observer.observe(targetNode, config);
 
 // Later, you can stop observing
 // observer.disconnect();
+
+
+
+
+
+// -------------------------CHECK IF BUTTONS DISABLED
+
+// aria-expanded="false" VS disabled=""

@@ -27,7 +27,11 @@
 from aqt import mw
 addonfolder = mw.addonManager.addonFromModule(__name__)
 
-config = mw.addonManager.getConfig(__name__)
+from os import path
+addon_path = path.dirname(__file__)
+
+import json
+config = json.load(open(f'{addon_path}/../user_files/config.json', 'r'))
 # example: config["night mode"]
 
 # for debugging since cant use print
