@@ -89,7 +89,7 @@ class ConfigWindow(QMainWindow):
             config['code languages'][name] = id
 
 
-        with open(f'{addon_path}/../user_files/config.json', 'w') as file:
+        with open(f'{addon_path}/user_files/config.json', 'w') as file:
             json.dump(config, file)
 
 

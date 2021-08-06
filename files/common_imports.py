@@ -24,8 +24,7 @@
 #
 # ------------------------------------------------------------------------------
 
-from os import path
-addon_path = path.dirname(__file__)
+addon_path = '/'.join(__file__.split('/')[:-2])
 
 from aqt import mw
 addonfolder = mw.addonManager.addonFromModule(__name__)
@@ -33,18 +32,20 @@ addonfolder = mw.addonManager.addonFromModule(__name__)
 # for debugging since cant use print
 from aqt.utils import showText
 
+from os import path, makedirs
 import json
 
 # check if config file exists, of not, create it
-if not(path.exists(f'{addon_path}/../user_files/config.json')):
-    with open(f'{addon_path}/../user_files/config.json', 'w') as file:
+if not(path.exists(f'{addon_path}/user_files/config.json')):
+    makedirs(f'{addon_path}/user_files')
+    with open(f'{addon_path}/user_files/config.json', 'w') as file:
         dict1 = {
             "show 'studied cards today' in homescreen": False,
             "code languages": {"Python": "py", "SQL": "sql", "None": "none"}
         }
         json.dump(dict1, file)
 
-config = json.load(open(f'{addon_path}/../user_files/config.json', 'r'))
+config = json.load(open(f'{addon_path}/user_files/config.json', 'r'))
 # example: config["night mode"]
 
 if not("show 'studied cards today' in homescreen" in config):
