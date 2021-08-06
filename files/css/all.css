@@ -40,6 +40,9 @@ button, button.btn {
     box-shadow: var(--btn-shadow) !important;
     border: var(--btn-border) !important;
 }
+button {
+    height: 17px;
+}
 
 :focus {
     outline: none !important;

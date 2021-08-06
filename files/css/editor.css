@@ -12,6 +12,19 @@
 	background-color: white;
 }
 
+/* <s id="g"></s> */
+#g {
+	color: grey;
+	text-decoration: none;
+}
+  
+/* tag to make equations bigger */
+/* <s id="e"></s> */
+#e {
+	font-size: 150%;
+	text-decoration: none;
+}
+
 
 /* --------- divider --------- */
 
@@ -25,33 +38,20 @@ hr {
 
 /* ---------- TABLES ---------- */
 
-.left_table {
+.left_table, .centre_table {
 	font-size: 16px;
 	border: none;
 	padding: 2px;
 	border-collapse: collapse;
 }
-.left_table td{
+.left_table td, .centre_table td {
 	border: 1px solid #b8b8b8;
 	padding: 3px;
 	padding-left: 5px; 
 	padding-right: 5px;
-	text-align: left;
 }
-
-.centre_table {
-	font-size: 16px;
-	border: none;
-	padding: 2px;
-	border-collapse: collapse;
-}
-.centre_table td{
-	border: 1px solid #b8b8b8;
-	padding: 3px;
-	padding-left: 5px; 
-	padding-right: 5px;
-	text-align: center;
-}
+.left_table td {text-align: left}
+.centre_table td {text-align: center}
 
 
 /* ----------CODE SYNTAX STYLING BELOW---------- */
@@ -86,4 +86,55 @@ code.shell {
     border-radius: .3em;
     white-space: normal;
 	background: var(--code-bg-color);
+}
+
+
+/* --------------------tooltips-------------------- */
+
+/* Tooltip container */
+.tooltip {
+	position: relative;
+	display: inline-block;
+	border-bottom: 1px dotted black; /* If you want dots under the hoverable text */
+}
+
+/* Tooltip text */
+.tooltip .tooltiptext {
+	font-size: 75%;
+	visibility: hidden;
+	width: 120px !important; /* was getting overwritten by default anki max-width: 100% */
+	background-color: #555;
+	color: #fff;
+	text-align: center;
+	padding: 5px 0;
+	border-radius: 6px;
+
+	/* Position the tooltip text */
+	position: absolute;
+	z-index: 1;
+	top: 125%;
+	left: 50%;
+	margin-left: -60px;
+
+	/* Fade in tooltip */
+	opacity: 0;
+	transition: opacity 0.3s;
+}
+
+/* Tooltip arrow */
+.tooltip .tooltiptext::after {
+	content: "";
+	position: absolute;
+	bottom: 100%;
+	left: 50%;
+	margin-left: -5px;
+	border-width: 5px;
+	border-style: solid;
+	border-color: transparent transparent #555 transparent;
+}
+
+/* Show the tooltip text when you mouse over the tooltip container */
+.tooltip:hover .tooltiptext {
+	visibility: visible;
+	opacity: 1;
 }

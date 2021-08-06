@@ -121,7 +121,7 @@ mw.addonManager.setConfigAction(__name__, show_new_window)
 # ------------------------------------------------------------------------------
 
 
-
+# send list of languages to js on request
 
 from aqt.gui_hooks import webview_did_receive_js_message
 from typing import Any, Tuple

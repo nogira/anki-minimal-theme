@@ -2,9 +2,23 @@
 function addPre(lang) {
     var input = window.getSelection();
     // document.execCommand( "copy", false, "" );
-    document.execCommand("insertHTML", false, `<pre><code class="lang-${lang}">${input}</code></pre>\n` );
-
+    document.execCommand("insertHTML", false, `<pre><code class="lang-${lang}">${input}\n</code></pre>\n` );
 }
+
+function addG() {
+    var input = window.getSelection();
+    document.execCommand("insertHTML", false, `<s id="g">${input}</s>` );
+}
+
+function addC() {
+    var input = window.getSelection();
+    document.execCommand("insertHTML", false, `<code>${input}</code>` );
+}
+
+// function addT() {
+//     var input = window.getSelection();
+//     document.execCommand("insertHTML", false, `<a class="tooltip">${input}<span class="tooltiptext"></span></a>` );
+// }
 
 
 // get filepath of editor_theme.js then modify that filepath to get filepath of editor.css
@@ -123,14 +137,16 @@ function main_func() {
 
     // -------------------------------ADD BUTTONS-------------------------------
 
-    var node = document.querySelector("div#blockFormatting div.btn-group.svelte-1x2qjkh");
+    var node1 = document.querySelector("div#blockFormatting div.btn-group.svelte-1x2qjkh");
 
-    button = document.createElement("div");
-    button.setAttribute("class", " svelte-13ncvxj");
+    button1 = document.createElement("div");
+    button1.setAttribute("class", " svelte-13ncvxj");
     codeblock_icon = '<!--Font Awesome Pro License https://fontawesome.com/license--><svg aria-hidden="true" focusable="false" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512" class="icn-dmns"><path fill="currentColor" d="M208 32h-88a56 56 0 0 0-56 56v77.49a40 40 0 0 1-11.72 28.29L7 239a24 24 0 0 0 0 34l45.24 45.24A40 40 0 0 1 64 346.52V424a56 56 0 0 0 56 56h88a16 16 0 0 0 16-16v-16a16 16 0 0 0-16-16h-88a8 8 0 0 1-8-8v-77.48a88.06 88.06 0 0 0-25.78-62.24L57.93 256l28.29-28.28A88.06 88.06 0 0 0 112 165.48V88a8 8 0 0 1 8-8h88a16 16 0 0 0 16-16V48a16 16 0 0 0-16-16zm361 207l-45.25-45.24A40.07 40.07 0 0 1 512 165.48V88a56 56 0 0 0-56-56h-88a16 16 0 0 0-16 16v16a16 16 0 0 0 16 16h88a8 8 0 0 1 8 8v77.48a88 88 0 0 0 25.78 62.24L518.06 256l-28.28 28.28A88 88 0 0 0 464 346.52V424a8 8 0 0 1-8 8h-88a16 16 0 0 0-16 16v16a16 16 0 0 0 16 16h88a56 56 0 0 0 56-56v-77.49a40 40 0 0 1 11.72-28.29L569 273a24 24 0 0 0 0-34z" class=""></path></svg>'
     
+    // sending message to python config file to send back all the list of code 
+    // languages in the config file
     pycmd('code_lang_html', (ret) => {
-        button.innerHTML = `<div class="dropdown svelte-13ncvxj">
+        button1.innerHTML = `<div class="dropdown svelte-13ncvxj">
                                 <button class="btn dropdown-toggle btn-day svelte-9lxpor" dropdown="true" data-bs-toggle="dropdown" tabindex="-1" style="--icon-size: 75%;" aria-expanded="false">
                                     <span style="--width-multiplier: 1;" class="svelte-9lxpor"><!--Font Awesome Pro License https://fontawesome.com/license-->
                                         ${codeblock_icon}
@@ -140,8 +156,57 @@ function main_func() {
                                     ${ret}
                                 </div>
                             </div>`
-        node.appendChild(button); 
+        node1.appendChild(button1); 
     });;
+
+    // -----------------
+
+    var node2 = document.querySelector("div#inlineFormatting div.btn-group.svelte-1x2qjkh");
+
+    button2 = document.createElement("div");
+    button2.setAttribute("class", " svelte-13ncvxj");
+    hide_icon = '<!--Font Awesome Pro License https://fontawesome.com/license--><svg aria-hidden="true" focusable="false" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512" class="icn-dmns"><path fill="currentColor" d="M634 471L36 3.51A16 16 0 0 0 13.51 6l-10 12.49A16 16 0 0 0 6 41l598 467.49a16 16 0 0 0 22.49-2.49l10-12.49A16 16 0 0 0 634 471zM296.79 146.47l134.79 105.38C429.36 191.91 380.48 144 320 144a112.26 112.26 0 0 0-23.21 2.47zm46.42 219.07L208.42 260.16C210.65 320.09 259.53 368 320 368a113 113 0 0 0 23.21-2.46zM320 112c98.65 0 189.09 55 237.93 144a285.53 285.53 0 0 1-44 60.2l37.74 29.5a333.7 333.7 0 0 0 52.9-75.11 32.35 32.35 0 0 0 0-29.19C550.29 135.59 442.93 64 320 64c-36.7 0-71.71 7-104.63 18.81l46.41 36.29c18.94-4.3 38.34-7.1 58.22-7.1zm0 288c-98.65 0-189.08-55-237.93-144a285.47 285.47 0 0 1 44.05-60.19l-37.74-29.5a333.6 333.6 0 0 0-52.89 75.1 32.35 32.35 0 0 0 0 29.19C89.72 376.41 197.08 448 320 448c36.7 0 71.71-7.05 104.63-18.81l-46.41-36.28C359.28 397.2 339.89 400 320 400z" class=""></path></svg>'
+    
+    button2.innerHTML = `<button class="btn btn-day svelte-9lxpor" title="Semi-Hide Text" dropdown="false" tabindex="-1" style="--icon-size: 75%;" onclick="addG();" aria-expanded="false">
+                            <span style="--width-multiplier: 1;" class="svelte-9lxpor">
+                                ${hide_icon}
+                            </span>
+                        </button>`
+    node2.appendChild(button2);
+
+    // -----------------
+
+    var node3 = document.querySelector("div#inlineFormatting div.btn-group.svelte-1x2qjkh");
+
+    button3 = document.createElement("div");
+    button3.setAttribute("class", " svelte-13ncvxj");
+    // code_icon = '<!--Font Awesome Pro License https://fontawesome.com/license--><svg aria-hidden="true" focusable="false" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512" class="icn-dmns"><path fill="currentColor" d="M634 471L36 3.51A16 16 0 0 0 13.51 6l-10 12.49A16 16 0 0 0 6 41l598 467.49a16 16 0 0 0 22.49-2.49l10-12.49A16 16 0 0 0 634 471zM296.79 146.47l134.79 105.38C429.36 191.91 380.48 144 320 144a112.26 112.26 0 0 0-23.21 2.47zm46.42 219.07L208.42 260.16C210.65 320.09 259.53 368 320 368a113 113 0 0 0 23.21-2.46zM320 112c98.65 0 189.09 55 237.93 144a285.53 285.53 0 0 1-44 60.2l37.74 29.5a333.7 333.7 0 0 0 52.9-75.11 32.35 32.35 0 0 0 0-29.19C550.29 135.59 442.93 64 320 64c-36.7 0-71.71 7-104.63 18.81l46.41 36.29c18.94-4.3 38.34-7.1 58.22-7.1zm0 288c-98.65 0-189.08-55-237.93-144a285.47 285.47 0 0 1 44.05-60.19l-37.74-29.5a333.6 333.6 0 0 0-52.89 75.1 32.35 32.35 0 0 0 0 29.19C89.72 376.41 197.08 448 320 448c36.7 0 71.71-7.05 104.63-18.81l-46.41-36.28C359.28 397.2 339.89 400 320 400z" class=""></path></svg>'
+    
+    button3.innerHTML = `<button class="btn btn-day svelte-9lxpor" title="Inline Code" dropdown="false" tabindex="-1" style="--icon-size: 75%;" onclick="addC();" aria-expanded="false">
+                            <span style="--width-multiplier: 1;" class="svelte-9lxpor">
+                                ${codeblock_icon}
+                            </span>
+                        </button>`
+
+    node3.appendChild(button3);
+
+    // -----------------
+
+    // var node4 = document.querySelector("div#inlineFormatting div.btn-group.svelte-1x2qjkh");
+
+    // button4 = document.createElement("div");
+    // button4.setAttribute("class", " svelte-13ncvxj");
+    // tooltip_icon = '<svg aria-hidden="true" focusable="false" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icn-dmns"><path fill="currentColor" d="M448 0H64C28.7 0 0 28.7 0 64v288c0 35.3 28.7 64 64 64h96v84c0 7.1 5.8 12 12 12 2.4 0 4.9-.7 7.1-2.4L304 416h144c35.3 0 64-28.7 64-64V64c0-35.3-28.7-64-64-64zm16 352c0 8.8-7.2 16-16 16H288l-12.8 9.6L208 428v-60H64c-8.8 0-16-7.2-16-16V64c0-8.8 7.2-16 16-16h384c8.8 0 16 7.2 16 16v288zM128 176c-17.7 0-32 14.3-32 32s14.3 32 32 32 32-14.3 32-32-14.3-32-32-32zm128 0c-17.7 0-32 14.3-32 32s14.3 32 32 32 32-14.3 32-32-14.3-32-32-32zm128 0c-17.7 0-32 14.3-32 32s14.3 32 32 32 32-14.3 32-32-14.3-32-32-32z" class=""></path></svg>'
+
+    // button4.innerHTML = `<button class="btn btn-day svelte-9lxpor" title="Inline Code" dropdown="false" tabindex="-1" style="--icon-size: 75%;" onclick="addT();" aria-expanded="false">
+    //                         <span style="--width-multiplier: 1;" class="svelte-9lxpor">
+    //                             ${tooltip_icon}
+    //                         </span>
+    //                     </button>`
+
+    // node4.appendChild(button4);
+
+
 };
 //                function    ms
 window.setTimeout(main_func, 100) //usually when you start the anki app it doesn't load the first time from mutation, so using time delay for the first load

@@ -36,10 +36,7 @@ from aqt.utils import showText
 import json
 
 # check if config file exists, of not, create it
-try:
-    with open(f'{addon_path}/../user_files/config.json', 'r') as file:
-        pass
-except:
+if not(path.exists(f'{addon_path}/../user_files/config.json')):
     with open(f'{addon_path}/../user_files/config.json', 'w') as file:
         dict1 = {
             "show 'studied cards today' in homescreen": False,
@@ -50,12 +47,8 @@ except:
 config = json.load(open(f'{addon_path}/../user_files/config.json', 'r'))
 # example: config["night mode"]
 
-try:
-    config["show 'studied cards today' in homescreen"]
-except:
+if not("show 'studied cards today' in homescreen" in config):
     config["show 'studied cards today' in homescreen"] = False
 
-try:
-    config['code languages']
-except:
+if not('code languages' in config):
     config['code languages'] = {"Python": "py", "SQL": "sql"}
