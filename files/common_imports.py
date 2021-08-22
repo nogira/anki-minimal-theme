@@ -24,10 +24,13 @@
 #
 # ------------------------------------------------------------------------------
 
-addon_path = '/'.join(__file__.split('/')[:-2])
-
 from aqt import mw
-addonfolder = mw.addonManager.addonFromModule(__name__)
+
+from os.path import abspath
+addon_path = abspath(__file__+"/../../")
+
+from re import sub
+addonfolder = sub(r'.*/', '', addon_path)
 
 # for debugging since cant use print
 from aqt.utils import showText
