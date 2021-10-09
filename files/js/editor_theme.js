@@ -1,17 +1,26 @@
 
+function convertBrackets(input) {
+    // replace the < and > with their html characters so html doesnt disappear 
+    // when adding tags around it
+    return String(input).replace(/</gi, "&lt;").replace(/>/gi, "&gt;")
+}
+
 function addPre(lang) {
     var input = window.getSelection();
+    var input = convertBrackets(input)
     // document.execCommand( "copy", false, "" );
     document.execCommand("insertHTML", false, `<pre><code class="lang-${lang}">${input}\n</code></pre>\n` );
 }
 
 function addG() {
     var input = window.getSelection();
+    input = convertBrackets(input)
     document.execCommand("insertHTML", false, `<s id="g">${input}</s>` );
 }
 
 function addC() {
     var input = window.getSelection();
+    input = convertBrackets(input)
     document.execCommand("insertHTML", false, `<code>${input}</code>` );
 }
 
