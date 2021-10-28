@@ -8,4 +8,7 @@
 
 <br>
 
-## [Support Me :)](https://nogira.github.io/generate/donate.html)
+
+<h2 align="center">
+  <a href="https://nogira.github.io/generate/donate.html" ><b>Support Me 🌞</b></a>
+</h2>
