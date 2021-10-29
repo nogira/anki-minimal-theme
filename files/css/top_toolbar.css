@@ -6,7 +6,7 @@
 
 a > svg {
     opacity: 0.7;
-    height: 16px !important;   /* does the !important fix image being too large?? */
+    /*height: 16px !important;   /* does the !important fix image being too large?? */
     padding-top: 4px;
     padding-bottom: 3px;
 }
