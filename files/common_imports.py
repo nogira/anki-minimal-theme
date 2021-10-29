@@ -39,7 +39,7 @@ from os import path, makedirs
 import json
 
 # check if config file exists, of not, create it
-if not(path.exists(f'{addon_path}/user_files/config.json')):
+if not path.exists(f'{addon_path}/user_files/config.json'):
     makedirs(f'{addon_path}/user_files')
     with open(f'{addon_path}/user_files/config.json', 'w') as file:
         dict1 = {
@@ -51,8 +51,8 @@ if not(path.exists(f'{addon_path}/user_files/config.json')):
 config = json.load(open(f'{addon_path}/user_files/config.json', 'r'))
 # example: config["night mode"]
 
-if not("show 'studied cards today' in homescreen" in config):
+if "show 'studied cards today' in homescreen" not in config:
     config["show 'studied cards today' in homescreen"] = False
 
-if not('code languages' in config):
-    config['code languages'] = {"Python": "py", "SQL": "sql"}
+if 'code languages' not in config:
+    config['code languages'] = {"Python": "py", "Javascript": "js"}
