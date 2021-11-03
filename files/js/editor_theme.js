@@ -43,7 +43,7 @@ function addS() {
     document.execCommand("insertHTML", false, `<s>${input}</s>` );
 }
 
-function addC() {
+function addCode() {
     const input = convertBrackets(window.getSelection());
     document.execCommand("insertHTML", false, `<code>${input}</code>` );
 }
@@ -155,66 +155,58 @@ function mainFunction() {
 
     // -------------------------------------------------------------------------
 
-    const pinIcon = svgTagStart + ' width="13" height="13" viewBox="0 0 384 512" class="bi bi-pin-angle"><path fill="currentColor" d="M306.5 186.6l-5.7-42.6H328c13.2 0 24-10.8 24-24V24c0-13.2-10.8-24-24-24H56C42.8 0 32 10.8 32 24v96c0 13.2 10.8 24 24 24h27.2l-5.7 42.6C29.6 219.4 0 270.7 0 328c0 13.2 10.8 24 24 24h144v104c0 .9.1 1.7.4 2.5l16 48c2.4 7.3 12.8 7.3 15.2 0l16-48c.3-.8.4-1.7.4-2.5V352h144c13.2 0 24-10.8 24-24 0-57.3-29.6-108.6-77.5-141.4zM50.5 304c8.3-38.5 35.6-70 71.5-87.8L138 96H80V48h224v48h-58l16 120.2c35.8 17.8 63.2 49.4 71.5 87.8z" class=""></path></svg>'
-    const pinElements = document.querySelectorAll("svg.bi-pin-angle")
+    const pinIcon = svgTagStart + ' width="13" height="13" viewBox="0 0 384 512" class="bi bi-pin-angle"><path fill="currentColor" d="M306.5 186.6l-5.7-42.6H328c13.2 0 24-10.8 24-24V24c0-13.2-10.8-24-24-24H56C42.8 0 32 10.8 32 24v96c0 13.2 10.8 24 24 24h27.2l-5.7 42.6C29.6 219.4 0 270.7 0 328c0 13.2 10.8 24 24 24h144v104c0 .9.1 1.7.4 2.5l16 48c2.4 7.3 12.8 7.3 15.2 0l16-48c.3-.8.4-1.7.4-2.5V352h144c13.2 0 24-10.8 24-24 0-57.3-29.6-108.6-77.5-141.4zM50.5 304c8.3-38.5 35.6-70 71.5-87.8L138 96H80V48h224v48h-58l16 120.2c35.8 17.8 63.2 49.4 71.5 87.8z" class=""></path></svg>';
+    const pinElements = document.querySelectorAll("svg.bi-pin-angle");
     for (let i = 0; i != pinElements.length; i++) {
-            pinElements[i].parentElement.innerHTML = pinIcon
+            pinElements[i].parentElement.innerHTML = pinIcon;
     }
 
     // -------------------------------ADD BUTTONS-------------------------------
 
-    const node1 = document.querySelector("div#blockFormatting div.btn-group.svelte-1x2qjkh");
+    const node1 = document.querySelector("#blockFormatting > div:nth-child(1)");
 
     const button1 = document.createElement("div");
     button1.setAttribute("class", " svelte-13ncvxj");
-    codeblockIcon = svgTagStart + ' viewBox="0 0 576 512"><path fill="currentColor" d="M208 32h-88a56 56 0 0 0-56 56v77.49a40 40 0 0 1-11.72 28.29L7 239a24 24 0 0 0 0 34l45.24 45.24A40 40 0 0 1 64 346.52V424a56 56 0 0 0 56 56h88a16 16 0 0 0 16-16v-16a16 16 0 0 0-16-16h-88a8 8 0 0 1-8-8v-77.48a88.06 88.06 0 0 0-25.78-62.24L57.93 256l28.29-28.28A88.06 88.06 0 0 0 112 165.48V88a8 8 0 0 1 8-8h88a16 16 0 0 0 16-16V48a16 16 0 0 0-16-16zm361 207l-45.25-45.24A40.07 40.07 0 0 1 512 165.48V88a56 56 0 0 0-56-56h-88a16 16 0 0 0-16 16v16a16 16 0 0 0 16 16h88a8 8 0 0 1 8 8v77.48a88 88 0 0 0 25.78 62.24L518.06 256l-28.28 28.28A88 88 0 0 0 464 346.52V424a8 8 0 0 1-8 8h-88a16 16 0 0 0-16 16v16a16 16 0 0 0 16 16h88a56 56 0 0 0 56-56v-77.49a40 40 0 0 1 11.72-28.29L569 273a24 24 0 0 0 0-34z" class=""></path></svg>'
+    codeIcon = svgTagStart + ' viewBox="0 0 576 512"><path fill="currentColor" d="M208 32h-88a56 56 0 0 0-56 56v77.49a40 40 0 0 1-11.72 28.29L7 239a24 24 0 0 0 0 34l45.24 45.24A40 40 0 0 1 64 346.52V424a56 56 0 0 0 56 56h88a16 16 0 0 0 16-16v-16a16 16 0 0 0-16-16h-88a8 8 0 0 1-8-8v-77.48a88.06 88.06 0 0 0-25.78-62.24L57.93 256l28.29-28.28A88.06 88.06 0 0 0 112 165.48V88a8 8 0 0 1 8-8h88a16 16 0 0 0 16-16V48a16 16 0 0 0-16-16zm361 207l-45.25-45.24A40.07 40.07 0 0 1 512 165.48V88a56 56 0 0 0-56-56h-88a16 16 0 0 0-16 16v16a16 16 0 0 0 16 16h88a8 8 0 0 1 8 8v77.48a88 88 0 0 0 25.78 62.24L518.06 256l-28.28 28.28A88 88 0 0 0 464 346.52V424a8 8 0 0 1-8 8h-88a16 16 0 0 0-16 16v16a16 16 0 0 0 16 16h88a56 56 0 0 0 56-56v-77.49a40 40 0 0 1 11.72-28.29L569 273a24 24 0 0 0 0-34z" class=""></path></svg>'
     
     // sending message to python config file to send back all the list of code 
     // languages in the config file
-    pycmd('code_lang_html', (ret) => {
+    pycmd('code_lang_html', (returned) => {
         button1.innerHTML = `<div class="dropdown svelte-13ncvxj">
                                 <button class="btn dropdown-toggle btn-day svelte-9lxpor" dropdown="true" data-bs-toggle="dropdown" tabindex="-1" style="--icon-size: 75%;" aria-expanded="false">
                                     <span style="--width-multiplier: 1;" class="svelte-9lxpor">
-                                        ${codeblockIcon}
+                                        ${codeIcon}
                                     </span>
                                 </button>
                                 <div class="dropdown-menu svelte-9q3irh">
-                                    ${ret}
+                                    ${returned}
                                 </div>
-                            </div>`
-        node1.appendChild(button1); 
-    });;
+                            </div>`;
+        node1.appendChild(button1);
+    });
 
     // -----------------
 
-    const node2 = document.querySelector("div#inlineFormatting div.btn-group.svelte-1x2qjkh");
+    // INLINE BUTTONS
 
-    const button2 = document.createElement("div");
-    button2.setAttribute("class", " svelte-13ncvxj");
+
+    const btnHtml = $("#inlineFormatting > div:nth-child(1) > div:nth-child(1)").html()
+                    .replace('disabled=""', "");
+
+    // strikethough icon
     hideIcon = svgTagStart + ' viewBox="0 0 512 512"><path fill="currentColor" d="M150.39 208h113.17l-46.31-23.16a45.65 45.65 0 0 1 0-81.68A67.93 67.93 0 0 1 247.56 96H310a45.59 45.59 0 0 1 36.49 18.25l15.09 20.13a16 16 0 0 0 22.4 3.21l25.62-19.19a16 16 0 0 0 3.21-22.4L397.7 75.84A109.44 109.44 0 0 0 310.1 32h-62.54a132.49 132.49 0 0 0-58.94 13.91c-40.35 20.17-64.19 62.31-60.18 108 1.76 20.09 10.02 38.37 21.95 54.09zM496 240H16a16 16 0 0 0-16 16v16a16 16 0 0 0 16 16h480a16 16 0 0 0 16-16v-16a16 16 0 0 0-16-16zm-92.5 80h-91.07l14.32 7.16a45.65 45.65 0 0 1 0 81.68 67.93 67.93 0 0 1-30.31 7.16H234a45.59 45.59 0 0 1-36.49-18.25l-15.09-20.13a16 16 0 0 0-22.4-3.21L134.4 393.6a16 16 0 0 0-3.21 22.4l15.11 20.17A109.44 109.44 0 0 0 233.9 480h62.54a132.42 132.42 0 0 0 58.93-13.91c40.36-20.17 64.2-62.31 60.19-108-1.19-13.69-5.89-26.27-12.06-38.09z"></path></svg>'
+    $("#inlineFormatting > div:nth-child(1) > div:nth-child(1)").clone()
+        .html(btnHtml.replace(/<svg.*?\/svg>/, hideIcon)
+                    .replace("Bold text (⌘B)", "Strikethrough")
+                    .replace(/(?=drop)/, 'onclick="addS()" '))
+        .insertAfter("#inlineFormatting > div:nth-child(1) > div:nth-child(3)");
     
-    button2.innerHTML = `<button class="btn btn-day svelte-9lxpor" title="Strikethrough" dropdown="false" tabindex="-1" style="--icon-size: 75%;" onclick="addS();" aria-expanded="false">
-                            <span style="--width-multiplier: 1;" class="svelte-9lxpor">
-                                ${hideIcon}
-                            </span>
-                        </button>`
-    node2.appendChild(button2);
-
-    // -----------------
-
-    const node3 = document.querySelector("div#inlineFormatting div.btn-group.svelte-1x2qjkh");
-
-    const button3 = document.createElement("div");
-    button3.setAttribute("class", " svelte-13ncvxj");
-    // code_icon = '<svg aria-hidden="true" focusable="false" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512" class="icn-dmns"><path fill="currentColor" d="M634 471L36 3.51A16 16 0 0 0 13.51 6l-10 12.49A16 16 0 0 0 6 41l598 467.49a16 16 0 0 0 22.49-2.49l10-12.49A16 16 0 0 0 634 471zM296.79 146.47l134.79 105.38C429.36 191.91 380.48 144 320 144a112.26 112.26 0 0 0-23.21 2.47zm46.42 219.07L208.42 260.16C210.65 320.09 259.53 368 320 368a113 113 0 0 0 23.21-2.46zM320 112c98.65 0 189.09 55 237.93 144a285.53 285.53 0 0 1-44 60.2l37.74 29.5a333.7 333.7 0 0 0 52.9-75.11 32.35 32.35 0 0 0 0-29.19C550.29 135.59 442.93 64 320 64c-36.7 0-71.71 7-104.63 18.81l46.41 36.29c18.94-4.3 38.34-7.1 58.22-7.1zm0 288c-98.65 0-189.08-55-237.93-144a285.47 285.47 0 0 1 44.05-60.19l-37.74-29.5a333.6 333.6 0 0 0-52.89 75.1 32.35 32.35 0 0 0 0 29.19C89.72 376.41 197.08 448 320 448c36.7 0 71.71-7.05 104.63-18.81l-46.41-36.28C359.28 397.2 339.89 400 320 400z" class=""></path></svg>'
-    
-    button3.innerHTML = `<button class="btn btn-day svelte-9lxpor" title="Inline Code" dropdown="false" tabindex="-1" style="--icon-size: 75%;" onclick="addC();" aria-expanded="false">
-                            <span style="--width-multiplier: 1;" class="svelte-9lxpor">
-                                ${codeblockIcon}
-                            </span>
-                        </button>`
-
-    node3.appendChild(button3);
+    // inline code icon
+    $("#inlineFormatting > div:nth-child(1) > div:nth-child(1)").clone()
+        .html(btnHtml.replace(/<svg.*?\/svg>/, codeIcon)
+                    .replace("Bold text (⌘B)", "Inline Code")
+                    .replace(/(?=drop)/, 'onclick="addCode()" '))
+        .appendTo("#inlineFormatting > div:nth-child(1)");
 
     // -----------------
 
@@ -232,6 +224,16 @@ function mainFunction() {
 
     // node4.appendChild(button4);
 
+    // -----------------
+
+    // REMOVE BUTTONS
+
+    $('[title="Unordered list"]').parent().remove();
+    $('[title="Ordered list"]').parent().remove();
+    $('#justify').parent().parent().parent().remove();
+
+    // $('[title="Attach pictures/audio/video (F3)"]').parent().remove();
+    // $('[title="Record audio (F5)"]').parent().remove();
 
 };
 //                function    ms
