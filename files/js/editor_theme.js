@@ -26,86 +26,120 @@
 # --------------------------------------------------------------------------- */
 
 // https://developer.mozilla.org/en-US/docs/Web/API/Selection
-// function modifySelection(start, end) {
-//     const copiedSelection = convertBrackets(window.getSelection());
-//     const modifiedSelection = `<b>${copiedSelection}</b>`
-//     // check which shadowroot is selected
-//     const numTextBoxes = $("#fields").children().length
-//     for (let i = 1; i != (numTextBoxes + 1); i++) {
-//         const selector = `#fields > div:nth-child(${i}) > div.field`;
-//         const node = document.querySelector(selector).shadowRoot;
-//         try {
-//             const range = node.getSelection().getRangeAt(0);
-//             // alert(JSON.stringify(range));   // dont be concerned if seems object empty
-//             // alert(range.startContainer.nodeType)
-//             // is a text node, thus inherits all these attributes/functions:
-//             // https://developer.mozilla.org/en-US/docs/Web/API/EventTarget
-//             // https://developer.mozilla.org/en-US/docs/Web/API/Node
-//             // https://developer.mozilla.org/en-US/docs/Web/API/CharacterData  <-- most useful
-//             // https://developer.mozilla.org/en-US/docs/Web/API/Text
-//             const startTextNode = range.startContainer;
+function modifySelection(start, end) {
+    const copiedSelection = convertBrackets(window.getSelection());
+    const modifiedSelection = `<b>${copiedSelection}</b>`
+    // check which shadowroot is selected
+    const numTextBoxes = $("#fields").children().length
+    for (let i = 1; i != (numTextBoxes + 1); i++) {
+        const selector = `#fields > div:nth-child(${i}) > div.field`;
+        const node = document.querySelector(selector).shadowRoot;
+        try {
+            const range = node.getSelection().getRangeAt(0);
+            // alert(JSON.stringify(range));   // dont be concerned if seems object empty
+            // alert(range.startContainer.nodeType)
+            // is a text node, thus inherits all these attributes/functions:
+            // https://developer.mozilla.org/en-US/docs/Web/API/EventTarget
+            // https://developer.mozilla.org/en-US/docs/Web/API/Node
+            // https://developer.mozilla.org/en-US/docs/Web/API/CharacterData  <-- most useful
+            // https://developer.mozilla.org/en-US/docs/Web/API/Text
+            const startTextNode = range.startContainer;
             
-//             window.getSelection().deleteFromDocument();
-//             // html = startTextNode.parentElement.innerHTML
-//             // newhtml = html.substring(0, range.startOffset) + modifiedSelection + html.substring(range.startOffset, html.length)
-//             // startTextNode.parentElement.innerHTML = newhtml
+            window.getSelection().deleteFromDocument();
+            // html = startTextNode.parentElement.innerHTML
+            // newhtml = html.substring(0, range.startOffset) + modifiedSelection + html.substring(range.startOffset, html.length)
+            // startTextNode.parentElement.innerHTML = newhtml
 
-//             // startTextNode.insertData(range.startOffset, modifiedSelection);
-//             const elem = 
-//             range.insertNode(createEle);
+            // startTextNode.insertData(range.startOffset, modifiedSelection);
+            const elem = 
+            range.insertNode(createEle);
 
-//             // const endTextNode = range.endContainer;
-//             // endTextNode.insertData(range.endOffset, "REEE");
-//         } catch (e) {/* do nothing on error */}
-//     }
-// }
+            // const endTextNode = range.endContainer;
+            // endTextNode.insertData(range.endOffset, "REEE");
+        } catch (e) {/* do nothing on error */}
+    }
+}
 
-function convertBrackets(input) {
-    // replace the < and > with their html characters so html doesnt disappear 
-    // when adding tags around it
-    return String(input).replace(/</g, "&lt;").replace(/>/g, "&gt;")
+function convertTextToHTML(input) {
+    /* when you use window.getSelection() it gets the text, not the html, so 
+    while the html for <a> will be &lt;a&gt; window.getSelection() will get <a>,
+    which is a problem because what is being replaced by execCommand is the 
+    html, so the <a> will become a html element, and disappear from the text. 
+    this function converts the text back to html. */
+    return String(input).replace(/</g, "&lt;")
+                        .replace(/ /g, "&gt;");
 }
 
 function wrapSelectionInElems(start, end) {
-    const output = start + convertBrackets(window.getSelection()) + end;
-    document.execCommand("insertHTML", false, output);
+    // const selection = convertTextToHTML(window.getSelection())
+    // const output = start + selection + end;
+    // document.execCommand("insertHTML", false, output);
+    const nodeForWrap = document.createElement("s");
+
+    const range = window.getSelection().getRangeAt(0);
+    range.surroundContents(nodeForWrap);
+}
+
+// this function constructs a hierachical object of the node type and its index in the node above
+// then able to get the node both items are contained in and use .innerHTML on it to change it, but now i will know where to insert the tags, and thus the range of where i need to convert &lt; and &gt;
+
+function getNodeIndex() {
+
 }
 
 function wrapSelectionInElem(elem) {
     const start = `<${elem}>`;
     const end = `</${elem.match(/^\S+/)[0]}>`;
     wrapSelectionInElems(start, end);
+
+    // const selection = window.getSelection()
+    
+
 }
 
 function addPre(lang) {
     wrapSelectionInElems(`<pre><code class="lang-${lang}">`, "\n</code></pre>\n");
 }
 
-
 // add editor.css to each editor field (have to make sure its within shadowroot)
-function mainFunction() {
+function changeFields() {
     {
-        // get filepath of editor_theme.js then modify that filepath to get filepath of editor.css
-        const script = document.currentScript;
-        const fullUrl = script.src;
-        const newPath = fullUrl.replace("js/editor_theme.js", "css/editor.css");
+        // get src of editor_theme.js script then modify that path to get path 
+        // of editor.css
+        const scriptUrl = $("#editor-script").prop("src")
+        const newPath = scriptUrl.replace("js/editor_theme.js", "css/editor.css");
 
         const fieldElemNodes = $("#fields").children().length;
 
         for (let i = 1; i != (fieldElemNodes + 1); i++) {
-            const newCSSElem = document.createElement("link");
-            newCSSElem.setAttribute("rel", "stylesheet");
-            newCSSElem.setAttribute("href", newPath);
             const selector = `#fields > div:nth-child(${i}) > div.field`;
             const node = document.querySelector(selector).shadowRoot;
 
             // to prevent infite additions of editor.css when field is updated 
-            // in browse, only add if not present (i.e. child nodes < 4)
-            if (node.childElementCount < 5) {
+            // in browse, only add if not present
+            // if not present, this = null
+            const cssElemPresent = node.querySelector(`[href="${newPath}"]`);
+
+            if (!cssElemPresent) {
+                const newCSSElem = document.createElement("link");
+                newCSSElem.setAttribute("rel", "stylesheet");
+                newCSSElem.setAttribute("href", newPath);
                 node.insertBefore(newCSSElem, node.childNodes[1]);
             }
         }
     }
+
+    // -------------------------------------------------------------------------
+
+    const pinIcon = '<svg class="icn-dmns" width="13" height="13" viewBox="0 0 384 512" class="bi bi-pin-angle"><path fill="currentColor" d="M306.5 186.6l-5.7-42.6H328c13.2 0 24-10.8 24-24V24c0-13.2-10.8-24-24-24H56C42.8 0 32 10.8 32 24v96c0 13.2 10.8 24 24 24h27.2l-5.7 42.6C29.6 219.4 0 270.7 0 328c0 13.2 10.8 24 24 24h144v104c0 .9.1 1.7.4 2.5l16 48c2.4 7.3 12.8 7.3 15.2 0l16-48c.3-.8.4-1.7.4-2.5V352h144c13.2 0 24-10.8 24-24 0-57.3-29.6-108.6-77.5-141.4zM50.5 304c8.3-38.5 35.6-70 71.5-87.8L138 96H80V48h224v48h-58l16 120.2c35.8 17.8 63.2 49.4 71.5 87.8z"></path></svg>';
+    const pinElements = document.querySelectorAll("svg.bi-pin-angle");
+    for (let i = 0; i != pinElements.length; i++) {
+            pinElements[i].parentElement.innerHTML = pinIcon;
+    }
+
+};
+
+function changeTopButtons() {
 
     // ----------------------------MODIFY BUTTON CSS----------------------------
 
@@ -176,101 +210,94 @@ function mainFunction() {
         document.querySelector(icon.selector).parentElement.innerHTML = svgTagStart + icon.svg
     }
 
-    // -------------------------------------------------------------------------
+        // -------------------------------ADD BUTTONS-------------------------------
 
-    const pinIcon = svgTagStart + ' width="13" height="13" viewBox="0 0 384 512" class="bi bi-pin-angle"><path fill="currentColor" d="M306.5 186.6l-5.7-42.6H328c13.2 0 24-10.8 24-24V24c0-13.2-10.8-24-24-24H56C42.8 0 32 10.8 32 24v96c0 13.2 10.8 24 24 24h27.2l-5.7 42.6C29.6 219.4 0 270.7 0 328c0 13.2 10.8 24 24 24h144v104c0 .9.1 1.7.4 2.5l16 48c2.4 7.3 12.8 7.3 15.2 0l16-48c.3-.8.4-1.7.4-2.5V352h144c13.2 0 24-10.8 24-24 0-57.3-29.6-108.6-77.5-141.4zM50.5 304c8.3-38.5 35.6-70 71.5-87.8L138 96H80V48h224v48h-58l16 120.2c35.8 17.8 63.2 49.4 71.5 87.8z"></path></svg>';
-    const pinElements = document.querySelectorAll("svg.bi-pin-angle");
-    for (let i = 0; i != pinElements.length; i++) {
-            pinElements[i].parentElement.innerHTML = pinIcon;
-    }
-
-    // -------------------------------ADD BUTTONS-------------------------------
-
-    {
-        const node = document.querySelector("#blockFormatting > div:nth-child(1)");
-
-        const codeBlockBtn = document.createElement("div");
-        codeBlockBtn.setAttribute("class", " svelte-13ncvxj");
-        codeIcon = svgTagStart + ' viewBox="0 0 576 512"><path fill="currentColor" d="M208 32h-88a56 56 0 0 0-56 56v77.49a40 40 0 0 1-11.72 28.29L7 239a24 24 0 0 0 0 34l45.24 45.24A40 40 0 0 1 64 346.52V424a56 56 0 0 0 56 56h88a16 16 0 0 0 16-16v-16a16 16 0 0 0-16-16h-88a8 8 0 0 1-8-8v-77.48a88.06 88.06 0 0 0-25.78-62.24L57.93 256l28.29-28.28A88.06 88.06 0 0 0 112 165.48V88a8 8 0 0 1 8-8h88a16 16 0 0 0 16-16V48a16 16 0 0 0-16-16zm361 207l-45.25-45.24A40.07 40.07 0 0 1 512 165.48V88a56 56 0 0 0-56-56h-88a16 16 0 0 0-16 16v16a16 16 0 0 0 16 16h88a8 8 0 0 1 8 8v77.48a88 88 0 0 0 25.78 62.24L518.06 256l-28.28 28.28A88 88 0 0 0 464 346.52V424a8 8 0 0 1-8 8h-88a16 16 0 0 0-16 16v16a16 16 0 0 0 16 16h88a56 56 0 0 0 56-56v-77.49a40 40 0 0 1 11.72-28.29L569 273a24 24 0 0 0 0-34z"></path></svg>'
-        
-        // sending message to python config file to send back all the list of code 
-        // languages in the config file
-        pycmd('code_lang_html', (returned) => {
-            codeBlockBtn.innerHTML = `
-                <div class="dropdown svelte-13ncvxj">
-                    <button class="btn dropdown-toggle btn-day svelte-9lxpor" dropdown="true" data-bs-toggle="dropdown" tabindex="-1" style="--icon-size: 75%;" aria-expanded="false">
-                        <span style="--width-multiplier: 1;" class="svelte-9lxpor">
-                            ${codeIcon}
-                        </span>
-                    </button>
-                    <div class="dropdown-menu svelte-9q3irh">
-                        ${returned}
-                    </div>
-                </div>`;
-            node.appendChild(codeBlockBtn);
-        });
-    }
-
-    // -----------------
-
-    // INLINE BUTTONS
-
-    const inlineFormatBtnGroupSelector = "#inlineFormatting > div:nth-child(1)"
-    const firstBtnSelector = inlineFormatBtnGroupSelector + " > div:nth-child(1)"
-    const btnHtml = $(firstBtnSelector).html()
-                    .replace('disabled=""', "");
-
-    // strikethough icon
-    hideIcon = svgTagStart + ' viewBox="0 0 512 512"><path fill="currentColor" d="M150.39 208h113.17l-46.31-23.16a45.65 45.65 0 0 1 0-81.68A67.93 67.93 0 0 1 247.56 96H310a45.59 45.59 0 0 1 36.49 18.25l15.09 20.13a16 16 0 0 0 22.4 3.21l25.62-19.19a16 16 0 0 0 3.21-22.4L397.7 75.84A109.44 109.44 0 0 0 310.1 32h-62.54a132.49 132.49 0 0 0-58.94 13.91c-40.35 20.17-64.19 62.31-60.18 108 1.76 20.09 10.02 38.37 21.95 54.09zM496 240H16a16 16 0 0 0-16 16v16a16 16 0 0 0 16 16h480a16 16 0 0 0 16-16v-16a16 16 0 0 0-16-16zm-92.5 80h-91.07l14.32 7.16a45.65 45.65 0 0 1 0 81.68 67.93 67.93 0 0 1-30.31 7.16H234a45.59 45.59 0 0 1-36.49-18.25l-15.09-20.13a16 16 0 0 0-22.4-3.21L134.4 393.6a16 16 0 0 0-3.21 22.4l15.11 20.17A109.44 109.44 0 0 0 233.9 480h62.54a132.42 132.42 0 0 0 58.93-13.91c40.36-20.17 64.2-62.31 60.19-108-1.19-13.69-5.89-26.27-12.06-38.09z"></path></svg>'
-    $(firstBtnSelector).clone()
-        .html(btnHtml.replace(/<svg.*?\/svg>/, hideIcon)
-                    .replace("Bold text (⌘B)", "Strikethrough")
-                    .replace(/(?=drop)/, 'onclick="wrapSelectionInElem(`s`)" '))
-        .insertAfter(inlineFormatBtnGroupSelector + " > div:nth-child(3)");
+        {
+            const node = document.querySelector("#blockFormatting > div:nth-child(1)");
     
-    // inline code icon
-    $(firstBtnSelector).clone()
-        .html(btnHtml.replace(/<svg.*?\/svg>/, codeIcon)
-                    .replace("Bold text (⌘B)", "Inline Code")
-                    .replace(/(?=drop)/, 'onclick="wrapSelectionInElem(`code`)" '))
-        .appendTo(inlineFormatBtnGroupSelector);
-
-    // -----------------
-
-    // var node4 = document.querySelector("div#inlineFormatting div.btn-group.svelte-1x2qjkh");
-
-    // button4 = document.createElement("div");
-    // button4.setAttribute("class", " svelte-13ncvxj");
-    // tooltip_icon = '<svg aria-hidden="true" focusable="false" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icn-dmns"><path fill="currentColor" d="M448 0H64C28.7 0 0 28.7 0 64v288c0 35.3 28.7 64 64 64h96v84c0 7.1 5.8 12 12 12 2.4 0 4.9-.7 7.1-2.4L304 416h144c35.3 0 64-28.7 64-64V64c0-35.3-28.7-64-64-64zm16 352c0 8.8-7.2 16-16 16H288l-12.8 9.6L208 428v-60H64c-8.8 0-16-7.2-16-16V64c0-8.8 7.2-16 16-16h384c8.8 0 16 7.2 16 16v288zM128 176c-17.7 0-32 14.3-32 32s14.3 32 32 32 32-14.3 32-32-14.3-32-32-32zm128 0c-17.7 0-32 14.3-32 32s14.3 32 32 32 32-14.3 32-32-14.3-32-32-32zm128 0c-17.7 0-32 14.3-32 32s14.3 32 32 32 32-14.3 32-32-14.3-32-32-32z"></path></svg>'
-
-    // button4.innerHTML = `<button class="btn btn-day svelte-9lxpor" title="Inline Code" dropdown="false" tabindex="-1" style="--icon-size: 75%;" onclick="addT();" aria-expanded="false">
-    //                         <span style="--width-multiplier: 1;" class="svelte-9lxpor">
-    //                             ${tooltip_icon}
-    //                         </span>
-    //                     </button>`
-
-    // node4.appendChild(button4);
-
-    // -----------------
-
-    // REMOVE BUTTONS
-
-    $('[title="Unordered list"]').parent().remove();
-    $('[title="Ordered list"]').parent().remove();
-    $('#justify').parent().parent().parent().remove();
-
-    // $('[title="Attach pictures/audio/video (F3)"]').parent().remove();
-    // $('[title="Record audio (F5)"]').parent().remove();
-
-};
+            const codeBlockBtn = document.createElement("div");
+            codeBlockBtn.setAttribute("class", " svelte-13ncvxj");
+            codeIcon = svgTagStart + ' viewBox="0 0 576 512"><path fill="currentColor" d="M208 32h-88a56 56 0 0 0-56 56v77.49a40 40 0 0 1-11.72 28.29L7 239a24 24 0 0 0 0 34l45.24 45.24A40 40 0 0 1 64 346.52V424a56 56 0 0 0 56 56h88a16 16 0 0 0 16-16v-16a16 16 0 0 0-16-16h-88a8 8 0 0 1-8-8v-77.48a88.06 88.06 0 0 0-25.78-62.24L57.93 256l28.29-28.28A88.06 88.06 0 0 0 112 165.48V88a8 8 0 0 1 8-8h88a16 16 0 0 0 16-16V48a16 16 0 0 0-16-16zm361 207l-45.25-45.24A40.07 40.07 0 0 1 512 165.48V88a56 56 0 0 0-56-56h-88a16 16 0 0 0-16 16v16a16 16 0 0 0 16 16h88a8 8 0 0 1 8 8v77.48a88 88 0 0 0 25.78 62.24L518.06 256l-28.28 28.28A88 88 0 0 0 464 346.52V424a8 8 0 0 1-8 8h-88a16 16 0 0 0-16 16v16a16 16 0 0 0 16 16h88a56 56 0 0 0 56-56v-77.49a40 40 0 0 1 11.72-28.29L569 273a24 24 0 0 0 0-34z"></path></svg>'
+            
+            // sending message to python config file to send back all the list of code 
+            // languages in the config file
+            pycmd('code_lang_html', (returned) => {
+                codeBlockBtn.innerHTML = `
+                    <div class="dropdown svelte-13ncvxj">
+                        <button class="btn dropdown-toggle btn-day svelte-9lxpor" dropdown="true" data-bs-toggle="dropdown" tabindex="-1" style="--icon-size: 75%;" aria-expanded="false">
+                            <span style="--width-multiplier: 1;" class="svelte-9lxpor">
+                                ${codeIcon}
+                            </span>
+                        </button>
+                        <div class="dropdown-menu svelte-9q3irh">
+                            ${returned}
+                        </div>
+                    </div>`;
+                node.appendChild(codeBlockBtn);
+            });
+        }
+    
+        // -----------------
+    
+        // INLINE BUTTONS
+    
+        const inlineFormatBtnGroupSelector = "#inlineFormatting > div:nth-child(1)"
+        const firstBtnSelector = inlineFormatBtnGroupSelector + " > div:nth-child(1)"
+        const btnHtml = $(firstBtnSelector).html().replace('disabled=""', "");
+    
+        // strikethough icon
+        hideIcon = svgTagStart + ' viewBox="0 0 512 512"><path fill="currentColor" d="M150.39 208h113.17l-46.31-23.16a45.65 45.65 0 0 1 0-81.68A67.93 67.93 0 0 1 247.56 96H310a45.59 45.59 0 0 1 36.49 18.25l15.09 20.13a16 16 0 0 0 22.4 3.21l25.62-19.19a16 16 0 0 0 3.21-22.4L397.7 75.84A109.44 109.44 0 0 0 310.1 32h-62.54a132.49 132.49 0 0 0-58.94 13.91c-40.35 20.17-64.19 62.31-60.18 108 1.76 20.09 10.02 38.37 21.95 54.09zM496 240H16a16 16 0 0 0-16 16v16a16 16 0 0 0 16 16h480a16 16 0 0 0 16-16v-16a16 16 0 0 0-16-16zm-92.5 80h-91.07l14.32 7.16a45.65 45.65 0 0 1 0 81.68 67.93 67.93 0 0 1-30.31 7.16H234a45.59 45.59 0 0 1-36.49-18.25l-15.09-20.13a16 16 0 0 0-22.4-3.21L134.4 393.6a16 16 0 0 0-3.21 22.4l15.11 20.17A109.44 109.44 0 0 0 233.9 480h62.54a132.42 132.42 0 0 0 58.93-13.91c40.36-20.17 64.2-62.31 60.19-108-1.19-13.69-5.89-26.27-12.06-38.09z"></path></svg>'
+        $(firstBtnSelector).clone()
+            .html(btnHtml.replace(/<svg.+?svg>/, hideIcon)
+                         .replace(/Bold.+?\)/, "Strikethrough")
+                         .replace(/(?=drop)/, 'onclick="wrapSelectionInElem(`s`)" '))
+            .insertAfter(inlineFormatBtnGroupSelector + " > div:nth-child(3)");
+        
+        // inline code icon
+        $(firstBtnSelector).clone()
+            .html(btnHtml.replace(/<svg.+?svg>/, codeIcon)
+                         .replace(/Bold.+?\)/, "Inline Code")
+                         .replace(/(?=drop)/, 'onclick="wrapSelectionInElem(`code`)" '))
+            .appendTo(inlineFormatBtnGroupSelector);
+    
+        // -----------------
+    
+        // var node4 = document.querySelector("div#inlineFormatting div.btn-group.svelte-1x2qjkh");
+    
+        // button4 = document.createElement("div");
+        // button4.setAttribute("class", " svelte-13ncvxj");
+        // tooltip_icon = '<svg aria-hidden="true" focusable="false" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icn-dmns"><path fill="currentColor" d="M448 0H64C28.7 0 0 28.7 0 64v288c0 35.3 28.7 64 64 64h96v84c0 7.1 5.8 12 12 12 2.4 0 4.9-.7 7.1-2.4L304 416h144c35.3 0 64-28.7 64-64V64c0-35.3-28.7-64-64-64zm16 352c0 8.8-7.2 16-16 16H288l-12.8 9.6L208 428v-60H64c-8.8 0-16-7.2-16-16V64c0-8.8 7.2-16 16-16h384c8.8 0 16 7.2 16 16v288zM128 176c-17.7 0-32 14.3-32 32s14.3 32 32 32 32-14.3 32-32-14.3-32-32-32zm128 0c-17.7 0-32 14.3-32 32s14.3 32 32 32 32-14.3 32-32-14.3-32-32-32zm128 0c-17.7 0-32 14.3-32 32s14.3 32 32 32 32-14.3 32-32-14.3-32-32-32z"></path></svg>'
+    
+        // button4.innerHTML = `<button class="btn btn-day svelte-9lxpor" title="Inline Code" dropdown="false" tabindex="-1" style="--icon-size: 75%;" onclick="addT();" aria-expanded="false">
+        //                         <span style="--width-multiplier: 1;" class="svelte-9lxpor">
+        //                             ${tooltip_icon}
+        //                         </span>
+        //                     </button>`
+    
+        // node4.appendChild(button4);
+    
+        // -----------------
+    
+        // REMOVE BUTTONS
+    
+        $('[title="Unordered list"]').parent().remove();
+        $('[title="Ordered list"]').parent().remove();
+        $('#justify').parent().parent().parent().remove();
+    
+        // $('[title="Attach pictures/audio/video (F3)"]').parent().remove();
+        // $('[title="Record audio (F5)"]').parent().remove();
+    
+}
 
 
 
 $(document).ready(() => {
+    changeTopButtons();
+
     // using delay bc fields dont load immediately (they load from js)
     //                  function    ms
-    window.setTimeout(mainFunction, 100)
-    // mainFunction();
+    window.setTimeout(changeFields, 100)
+    // changeFields();
 
 
 
@@ -287,7 +314,7 @@ $(document).ready(() => {
     const callback = (mutationsList, observer) => {
         for (const mutation of mutationsList) {
             if (mutation.type === 'childList') {
-                mainFunction();
+                changeFields();
             }
         }
     };

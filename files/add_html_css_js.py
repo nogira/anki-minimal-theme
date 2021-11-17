@@ -109,7 +109,7 @@ def on_webview_will_set_content(
             f"/_addons/{addonfolder}/files/prism/prism.js")
         
         # add script after html has loaded to make sure shadowroot is present
-        web_content.head += f'<script async src="/_addons/{addonfolder}/files\
+        web_content.head += f'<script async id="editor-script" src="/_addons/{addonfolder}/files\
 /js/editor_theme.js"></script>'
 
 
