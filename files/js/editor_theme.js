@@ -25,80 +25,79 @@
 #
 # --------------------------------------------------------------------------- */
 
-// https://developer.mozilla.org/en-US/docs/Web/API/Selection
-function modifySelection(start, end) {
-    const copiedSelection = convertBrackets(window.getSelection());
-    const modifiedSelection = `<b>${copiedSelection}</b>`
-    // check which shadowroot is selected
+function executeWrapSelectionInElems(...nodesForWrap) {
     const numTextBoxes = $("#fields").children().length
+
     for (let i = 1; i != (numTextBoxes + 1); i++) {
         const selector = `#fields > div:nth-child(${i}) > div.field`;
         const node = document.querySelector(selector).shadowRoot;
+        // use try in case nothing is selected
         try {
             const range = node.getSelection().getRangeAt(0);
-            // alert(JSON.stringify(range));   // dont be concerned if seems object empty
-            // alert(range.startContainer.nodeType)
-            // is a text node, thus inherits all these attributes/functions:
-            // https://developer.mozilla.org/en-US/docs/Web/API/EventTarget
-            // https://developer.mozilla.org/en-US/docs/Web/API/Node
-            // https://developer.mozilla.org/en-US/docs/Web/API/CharacterData  <-- most useful
-            // https://developer.mozilla.org/en-US/docs/Web/API/Text
-            const startTextNode = range.startContainer;
-            
-            window.getSelection().deleteFromDocument();
-            // html = startTextNode.parentElement.innerHTML
-            // newhtml = html.substring(0, range.startOffset) + modifiedSelection + html.substring(range.startOffset, html.length)
-            // startTextNode.parentElement.innerHTML = newhtml
 
-            // startTextNode.insertData(range.startOffset, modifiedSelection);
-            const elem = 
-            range.insertNode(createEle);
+            try {
+                for (const nodeForWrap of nodesForWrap) {
+                    range.surroundContents(nodeForWrap);
+                }
+                
+            } catch (e) {
+                alert(`Can't semi-overlap HTML tags!
 
-            // const endTextNode = range.endContainer;
-            // endTextNode.insertData(range.endOffset, "REEE");
+Illustrative Example:
+- Good
+  <bold>text</bold> <italic>text</italic>
+
+- Also Good
+  <bold><italic>text</italic></bold>text
+
+- BAD !!
+  <bold><italic>text</bold> text</italic>`)
+//    └──────────┘     └────────────┘
+//    │      └────────────┘       │
+//    └───────────────────────────┘
+//    │      └───────────┼────────────┘
+//    └──────────────────┘
+            }
         } catch (e) {/* do nothing on error */}
     }
 }
 
-function convertTextToHTML(input) {
-    /* when you use window.getSelection() it gets the text, not the html, so 
-    while the html for <a> will be &lt;a&gt; window.getSelection() will get <a>,
-    which is a problem because what is being replaced by execCommand is the 
-    html, so the <a> will become a html element, and disappear from the text. 
-    this function converts the text back to html. */
-    return String(input).replace(/</g, "&lt;")
-                        .replace(/ /g, "&gt;");
+function createNode(elem, ...attrs) {
+    const node = document.createElement(elem);
+    if (attrs) {
+        for (const attr of attrs) {
+            node.setAttribute(attr[0], attr[1])
+        }
+    }
+    return node
+}
+//                           one elem per arg, with each arg being an array. 
+//                           elems is array
+function wrapSelectionInElems(...elems) {
+    const nodesForWrap = [];
+    // get each elem from array elems, 
+    for (const elem of elems) {
+        // separate the tag from attributes, with each set of attribute being 
+        // an array, thus, attrs is an array of arrays
+        // ["tag", ["attr1", "val1"], ["attr2", "val2"]]
+        const [tag, ...attrs] = elem;
+        // tag = "tag"
+        // attrs = [["attr1", "val1"], ["attr2", "val2"]]
+        // add to array in reverse so order of wrapping is correct
+        //                                 convert attrs array to args
+        nodesForWrap.unshift(createNode(tag, ...attrs));
+    }
+    executeWrapSelectionInElems(...nodesForWrap);
 }
 
-function wrapSelectionInElems(start, end) {
-    // const selection = convertTextToHTML(window.getSelection())
-    // const output = start + selection + end;
-    // document.execCommand("insertHTML", false, output);
-    const nodeForWrap = document.createElement("s");
-
-    const range = window.getSelection().getRangeAt(0);
-    range.surroundContents(nodeForWrap);
-}
-
-// this function constructs a hierachical object of the node type and its index in the node above
-// then able to get the node both items are contained in and use .innerHTML on it to change it, but now i will know where to insert the tags, and thus the range of where i need to convert &lt; and &gt;
-
-function getNodeIndex() {
-
-}
-
-function wrapSelectionInElem(elem) {
-    const start = `<${elem}>`;
-    const end = `</${elem.match(/^\S+/)[0]}>`;
-    wrapSelectionInElems(start, end);
-
-    // const selection = window.getSelection()
-    
-
+function wrapSelectionInElem(elem, ...attrs) {
+    const nodeForWrap = createNode(elem, ...attrs);
+    // console.log(nodeForWrap)
+    executeWrapSelectionInElems(nodeForWrap);
 }
 
 function addPre(lang) {
-    wrapSelectionInElems(`<pre><code class="lang-${lang}">`, "\n</code></pre>\n");
+    wrapSelectionInElems(["pre"], ["code", ["class", `lang-${lang}`]]);
 }
 
 // add editor.css to each editor field (have to make sure its within shadowroot)
