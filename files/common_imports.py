@@ -30,7 +30,10 @@ from os.path import abspath
 addon_path = abspath(__file__+"/../../")
 
 from re import sub
-addonfolder = sub(r'.*/', '', addon_path)
+#                   `/` for mac, `\` for windows
+addonfolder = sub(r'.*(/|\\)', '', addon_path)
+
+files_folder_rel = f"/_addons/{addonfolder}/files/"
 
 # for debugging since cant use print
 from aqt.utils import showText

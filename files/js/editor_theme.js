@@ -35,6 +35,7 @@ function executeWrapSelectionInElems(...nodesForWrap) {
         try {
             const range = node.getSelection().getRangeAt(0);
 
+            // use try in case user tries to semi-overlap html tags which doesn't work
             try {
                 for (const nodeForWrap of nodesForWrap) {
                     range.surroundContents(nodeForWrap);
