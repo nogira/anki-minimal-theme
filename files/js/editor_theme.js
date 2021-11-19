@@ -190,7 +190,7 @@ function changeTopButtons() {
         // {"svg": ,
         // "selector": "svg.bi-text-indent-left"}, // outdent icon
         // ---------------------------------------------------------------------
-        {"svg": ' viewBox="0 0 448 512" id="mdi-format-color-text"><path fill="currentColor" d="M432 432h-33.32l-135-389.24A16 16 0 0 0 248.55 32h-49.1a16 16 0 0 0-15.12 10.76L49.32 432H16a16 16 0 0 0-16 16v16a16 16 0 0 0 16 16h128a16 16 0 0 0 16-16v-16a16 16 0 0 0-16-16h-35.44l33.31-96h164.26l33.31 96H304a16 16 0 0 0-16 16v16a16 16 0 0 0 16 16h128a16 16 0 0 0 16-16v-16a16 16 0 0 0-16-16zM158.53 288L224 99.31 289.47 288z"></path></svg>',
+        {"svg": ' viewBox="0 0 448 512" id="mdi-format-color-text mdi-color-helper"><path fill="var(--color-helper-color)" d="M432 432h-33.32l-135-389.24A16 16 0 0 0 248.55 32h-49.1a16 16 0 0 0-15.12 10.76L49.32 432H16a16 16 0 0 0-16 16v16a16 16 0 0 0 16 16h128a16 16 0 0 0 16-16v-16a16 16 0 0 0-16-16h-35.44l33.31-96h164.26l33.31 96H304a16 16 0 0 0-16 16v16a16 16 0 0 0 16 16h128a16 16 0 0 0 16-16v-16a16 16 0 0 0-16-16zM158.53 288L224 99.31 289.47 288z"></path></svg>',
         "selector": "svg#mdi-format-color-text"}, // text color icon
         {"svg": ' viewBox="0 0 544 512"><g class="fa-group"><path d="M0 480l99.92 32 35.45-35.45-67-67zM527.92 79.27l-63.2-63.2a54.89 54.89 0 0 0-75.12-2.35l-199 170 169.72 169.74 170-199.06a54.88 54.88 0 0 0-2.4-75.13z" class="fa-secondary" id="mdi-color-helper"/><path d="M75.94 371.84l50.93-50.94-13.05-42.83A36.6 36.6 0 0 1 124.61 240l41.52-35.44 173.34 173.31-35.55 41.64a36.59 36.59 0 0 1-38.15 10.78L223 417.21l-50.86 50.86z" /></g></svg>',
         "selector": "svg#mdi-format-color-highlight"}, // highlight icon
@@ -279,10 +279,22 @@ function changeTopButtons() {
         // -----------------
     
         // REMOVE BUTTONS
-    
-        $('[title="Unordered list"]').parent().remove();
-        $('[title="Ordered list"]').parent().remove();
-        $('#justify').parent().parent().parent().remove();
+
+        // sending message to python config file to send back all the list of code 
+        // languages in the config file
+        pycmd("get_config", (returned) => {
+            const config = JSON.parse(returned)
+
+            if (config.editorButtonUL == false) {
+                $('[title="Unordered list"]').parent().remove();
+            }
+            if (config.editorButtonOL == false) {
+                $('[title="Ordered list"]').parent().remove();
+            }
+            if (config.editorButtonJustify == false) {
+                $('#justify').parent().parent().parent().remove();
+            }
+        });
     
         // $('[title="Attach pictures/audio/video (F3)"]').parent().remove();
         // $('[title="Record audio (F5)"]').parent().remove();
@@ -328,6 +340,11 @@ $(document).ready(() => {
     // Later, you can stop observing
     // observer.disconnect();
 })
+
+
+
+
+
 
 
 

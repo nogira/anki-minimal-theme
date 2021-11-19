@@ -27,7 +27,7 @@
 from .common_imports import *
 
 
-from aqt.qt import QMainWindow, QVBoxLayout, QCheckBox, QLabel, QPushButton, QWidget, QPlainTextEdit
+from aqt.qt import QMainWindow, QVBoxLayout, QHBoxLayout, QCheckBox, QLabel, QPushButton, QWidget, QPlainTextEdit, QStyle, QIcon
 
 class ConfigWindow(QMainWindow):
     def __init__(self):
@@ -39,16 +39,51 @@ class ConfigWindow(QMainWindow):
 
         # ----------------------------------------------------------------------
 
+        # ------ cards studied today - homescreen ------
+        
         self.opt1 = QCheckBox("Show 'studied cards today' in homescreen.")
         self.opt1.setChecked(config["show 'studied cards today' in homescreen"])
         layout.addWidget(self.opt1)
 
         space = QLabel(" ")
         layout.addWidget(space)
+        
+        # ------ editor buttons ------
+        
+        self.opt1 = QCheckBox("Show 'unordered list' editor button")
+        self.opt1.setChecked(config["editorButtonUL"])
+        layout.addWidget(self.opt1)
+        
+        self.opt1 = QCheckBox("Show 'ordered list' editor button")
+        self.opt1.setChecked(config["editorButtonOL"])
+        layout.addWidget(self.opt1)
+        
+        self.opt1 = QCheckBox("Show 'paragraph modifier' editor button")
+        self.opt1.setChecked(config["editorButtonPara"])
+        layout.addWidget(self.opt1)
+        
+        space = QLabel(" ")
+        layout.addWidget(space)
+        
+        # ------ code languages ------
+        
+        # --- label ---
+        
+        code_label = QLabel("Code Languages to Choose From:")
+        # code_label.setIcon(self.style().standardIcon(getattr(QStyle, "SP_FileDialogInfoView")))
+        
+        code_label_info_icon = QLabel("💬")#.setPixmap(self.style().standardIcon(getattr(QStyle, "SP_FileDialogInfoView")))
+        code_label_info_icon.setToolTip('- One line per languge\n- Format of: \"<Name>,<prismjs id>\"\n- Example: \"Python,py\"\n- Find prism js IDs at prismjs.com/#supported-languages')
+        
+        h_box = QHBoxLayout()
+        h_box.addWidget(code_label)
+        h_box.addStretch()
+        h_box.addWidget(code_label_info_icon)
 
-        code_label = QLabel("Code Languages to Choose From:\n - One line per languge\n - Format of: \"<Name>,<prismjs id>\"\n - Example: \"Python,py\"\n - Find prism js IDs at prismjs.com/#supported-languages")
-        layout.addWidget(code_label)
+        layout.addLayout(h_box)
 
+        # --- text box ---
+        
         self.text_box = QPlainTextEdit()
         temp_code_list = []
         for key, value in config['code languages'].items():
@@ -57,6 +92,8 @@ class ConfigWindow(QMainWindow):
         layout.addWidget(self.text_box)
 
         layout.addWidget(space)
+        
+        # ------ save button ------
 
         msg = QLabel("Restart anki for all changes to take effect")
         layout.addWidget(msg)
@@ -80,6 +117,10 @@ class ConfigWindow(QMainWindow):
         global config
 
         config["show 'studied cards today' in homescreen"] = self.opt1.isChecked()
+        
+        config["editorButtonUL"] = self.opt1.isChecked()
+        config["editorButtonOL"] = self.opt1.isChecked()
+        config["editorButtonPara"] = self.opt1.isChecked()
 
         # remove code values from dict so when re-added the order of the items is able to be updated too
         config['code languages'] = {}
@@ -137,6 +178,11 @@ def on_webview_did_receive_js_message(
             output += f'<button class="btn dropdown-item svelte-u5csu6 btn-day" onclick="addPre(\'{value}\');">{key}</button>\n'
 
         return (True, output)
+
+    elif message == "get_config":
+        output = json.dumps(config)
+        return (True, output)
+
     else:
         return handled
 
