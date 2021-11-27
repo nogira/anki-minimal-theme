@@ -1,14 +1,16 @@
 
 /*       top buttons       */
 
+
 button {
     --border-left-radius: var(--btn-corner);
     --border-right-radius: var(--btn-corner);
 }
 .btn {
+    --icon-size: 58% !important;
+
     background: var(--btn-bg-color);
     height: var(--editor-btn-height) !important; /* was 24px */
-    --icon-size: 50% !important;
     margin-left: 0px !important;
     margin-left: 1px !important;
     margin-right: 1px !important;

@@ -4,3 +4,5 @@
 other
 meta.json
 build
+
+__pycache__
