@@ -82,6 +82,12 @@ def on_webview_will_set_content(
         mod_body = re.sub('REPLACE_ME', sync_icon, mod_body)
 
         web_content.body = mod_body
+        
+        
+        # ------------------- ANKIMOTE COMPATIBILITY ---------------------------
+
+        web_content.head += '<script async' + \
+                        f' src="{files_folder_rel}js/ankimote_patch.js"></script>'
 
 
     elif isinstance(context, DeckBrowser):
