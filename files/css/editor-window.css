@@ -1,13 +1,17 @@
 
 /*       top buttons       */
 
-
 button {
     --border-left-radius: var(--btn-corner);
     --border-right-radius: var(--btn-corner);
 }
-.btn {
+div.btn-toolbar svg {
     --icon-size: 58% !important;
+}
+.btn {
+    /* font-size: 0.75rem !important; */
+
+    /* --icon-size: 58% !important; */
 
     background: var(--btn-bg-color);
     height: var(--editor-btn-height) !important; /* was 24px */
@@ -39,6 +43,17 @@ nav {
 
 
 /*       FIELD       */
+
+div.label-container {
+    /* remove bottom dotted line */
+    border: none !important;
+
+    background-color: rgba(244,244,244,1) !important;
+}
+div.editor-field {
+    /* remove line around edit fields */
+    border: none !important;
+}
 
 span.fieldname {
     font-size: 13px;

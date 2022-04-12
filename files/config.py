@@ -26,166 +26,162 @@
 
 from .common_imports import *
 
+# ------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
 
-from aqt.qt import QMainWindow, QVBoxLayout, QHBoxLayout, QCheckBox, QLabel, QPushButton, QWidget, QPlainTextEdit, QStyle, QIcon
+# from aqt.qt import QMainWindow, QVBoxLayout, QHBoxLayout, QCheckBox, QLabel, QPushButton, QWidget, QPlainTextEdit, QStyle, QIcon
 
-class ConfigWindow(QMainWindow):
-    def __init__(self):
-        super().__init__()
-        self.setWindowTitle("Minimal Theme Settings")
-        layout = QVBoxLayout()
+# class ConfigWindow(QMainWindow):
+#     def __init__(self):
+#         super().__init__()
+#         self.setWindowTitle("Minimal Theme Settings")
+#         layout = QVBoxLayout()
 
-        global config
+#         global config
 
-        # ----------------------------------------------------------------------
+#         # ----------------------------------------------------------------------
 
-        # ------ cards studied today - homescreen ------
+#         # ------ cards studied today - homescreen ------
         
-        self.opt1 = QCheckBox("Show 'studied cards today' in homescreen.")
-        self.opt1.setChecked(config["show 'studied cards today' in homescreen"])
-        layout.addWidget(self.opt1)
+#         self.opt1 = QCheckBox("Show 'studied cards today' in homescreen.")
+#         self.opt1.setChecked(config["show 'studied cards today' in homescreen"])
+#         layout.addWidget(self.opt1)
 
-        space = QLabel(" ")
-        layout.addWidget(space)
+#         space = QLabel(" ")
+#         layout.addWidget(space)
         
-        # ------ editor buttons ------
+#         # ------ editor buttons ------
         
-        self.opt1 = QCheckBox("Show 'unordered list' editor button")
-        self.opt1.setChecked(config["editorButtonUL"])
-        layout.addWidget(self.opt1)
+#         self.opt1 = QCheckBox("Show 'unordered list' editor button")
+#         self.opt1.setChecked(config["editorButtonUL"])
+#         layout.addWidget(self.opt1)
         
-        self.opt1 = QCheckBox("Show 'ordered list' editor button")
-        self.opt1.setChecked(config["editorButtonOL"])
-        layout.addWidget(self.opt1)
+#         self.opt1 = QCheckBox("Show 'ordered list' editor button")
+#         self.opt1.setChecked(config["editorButtonOL"])
+#         layout.addWidget(self.opt1)
         
-        self.opt1 = QCheckBox("Show 'paragraph modifier' editor button")
-        self.opt1.setChecked(config["editorButtonPara"])
-        layout.addWidget(self.opt1)
+#         self.opt1 = QCheckBox("Show 'paragraph modifier' editor button")
+#         self.opt1.setChecked(config["editorButtonPara"])
+#         layout.addWidget(self.opt1)
         
-        space = QLabel(" ")
-        layout.addWidget(space)
+#         space = QLabel(" ")
+#         layout.addWidget(space)
         
-        # ------ code languages ------
+#         # ------ code languages ------
         
-        # --- label ---
+#         # --- label ---
         
-        code_label = QLabel("Code Languages to Choose From:")
-        # code_label.setIcon(self.style().standardIcon(getattr(QStyle, "SP_FileDialogInfoView")))
+#         code_label = QLabel("Code Languages to Choose From:")
+#         # code_label.setIcon(self.style().standardIcon(getattr(QStyle, "SP_FileDialogInfoView")))
         
-        code_label_info_icon = QLabel("💬")#.setPixmap(self.style().standardIcon(getattr(QStyle, "SP_FileDialogInfoView")))
-        code_label_info_icon.setToolTip('- One line per languge\n- Format of: \"<Name>,<prismjs id>\"\n- Example: \"Python,py\"\n- Find prism js IDs at prismjs.com/#supported-languages')
+#         code_label_info_icon = QLabel("💬")#.setPixmap(self.style().standardIcon(getattr(QStyle, "SP_FileDialogInfoView")))
+#         code_label_info_icon.setToolTip('- One line per languge\n- Format of: \"<Name>,<prismjs id>\"\n- Example: \"Python,py\"\n- Find prism js IDs at prismjs.com/#supported-languages')
         
-        h_box = QHBoxLayout()
-        h_box.addWidget(code_label)
-        h_box.addStretch()
-        h_box.addWidget(code_label_info_icon)
+#         h_box = QHBoxLayout()
+#         h_box.addWidget(code_label)
+#         h_box.addStretch()
+#         h_box.addWidget(code_label_info_icon)
 
-        layout.addLayout(h_box)
+#         layout.addLayout(h_box)
 
-        # --- text box ---
+#         # --- text box ---
         
-        self.text_box = QPlainTextEdit()
-        temp_code_list = []
-        for key, value in config['code languages'].items():
-            temp_code_list.append(key+","+value)
-        self.text_box.insertPlainText('\n'.join(temp_code_list))
-        layout.addWidget(self.text_box)
+#         self.text_box = QPlainTextEdit()
+#         temp_code_list = []
+#         for key, value in config['code languages'].items():
+#             temp_code_list.append(key+","+value)
+#         self.text_box.insertPlainText('\n'.join(temp_code_list))
+#         layout.addWidget(self.text_box)
 
-        layout.addWidget(space)
+#         layout.addWidget(space)
         
-        # ------ save button ------
+#         # ------ save button ------
 
-        msg = QLabel("Restart anki for all changes to take effect")
-        layout.addWidget(msg)
+#         msg = QLabel("Restart anki for all changes to take effect")
+#         layout.addWidget(msg)
 
-        layout.addWidget(space)
+#         layout.addWidget(space)
 
-        btn1 = QPushButton("Save")
-        btn1.clicked.connect(self.save_to_file)
-        layout.addWidget(btn1)
+#         btn1 = QPushButton("Save")
+#         btn1.clicked.connect(self.save_to_file)
+#         layout.addWidget(btn1)
 
-        # ----------------------------------------------------------------------
+#         # ----------------------------------------------------------------------
 
-        widget = QWidget()
-        widget.setLayout(layout)
-        self.setCentralWidget(widget)
+#         widget = QWidget()
+#         widget.setLayout(layout)
+#         self.setCentralWidget(widget)
 
-        # this is to save the new dictionary values if they were set in the try/except statements
-        self.save_to_file()
+#         # this is to save the new dictionary values if they were set in the try/except statements
+#         self.save_to_file()
 
-    def save_to_file(self):
-        global config
+#     def save_to_file(self):
+#         global config
 
-        config["show 'studied cards today' in homescreen"] = self.opt1.isChecked()
+#         config["show 'studied cards today' in homescreen"] = self.opt1.isChecked()
         
-        config["editorButtonUL"] = self.opt1.isChecked()
-        config["editorButtonOL"] = self.opt1.isChecked()
-        config["editorButtonPara"] = self.opt1.isChecked()
+#         config["editorButtonUL"] = self.opt1.isChecked()
+#         config["editorButtonOL"] = self.opt1.isChecked()
+#         config["editorButtonPara"] = self.opt1.isChecked()
 
-        # remove code values from dict so when re-added the order of the items is able to be updated too
-        config['code languages'] = {}
-        langs = self.text_box.toPlainText().split('\n')
-        for lang in langs:
-            name, id = lang.split(',')
-            config['code languages'][name] = id
-
-
-        with open(f'{addon_path}/user_files/config.json', 'w') as file:
-            json.dump(config, file)
+#         # remove code values from dict so when re-added the order of the items is able to be updated too
+#         config['code languages'] = {}
+#         langs = self.text_box.toPlainText().split('\n')
+#         for lang in langs:
+#             name, id = lang.split(',')
+#             config['code languages'][name] = id
 
 
-        # DeckBrowser.refresh()
+#         with open(f'{addon_path}/user_files/config.json', 'w') as file:
+#             json.dump(config, file)
 
-        # class AnkiQt(QMainWindow):
-        #     def setupDeckBrowser(self) -> None:
-        #         from aqt.deckbrowser import DeckBrowser
 
-        #         self.deckBrowser = DeckBrowser(self)
-        # mw.deckBrowser.refresh()
+#         # DeckBrowser.refresh()
+
+#         # class AnkiQt(QMainWindow):
+#         #     def setupDeckBrowser(self) -> None:
+#         #         from aqt.deckbrowser import DeckBrowser
+
+#         #         self.deckBrowser = DeckBrowser(self)
+#         # mw.deckBrowser.refresh()
         
-        self.close()
+#         self.close()
 
-# get the addon window instance
-from aqt import dialogs
+# # get the addon window instance
+# from aqt import dialogs
 
-# open new window (ConfigWindow) linked to anki main window (mw) so it doesn't auto-close
-def show_new_window():
-    dialogs._dialogs["AddonsDialog"][1].close()
-    mw.myW = w = ConfigWindow()
-    w.show()
+# # open new window (ConfigWindow) linked to anki main window (mw) so it doesn't auto-close
+# def show_new_window():
+#     dialogs._dialogs["AddonsDialog"][1].close()
+#     mw.myW = w = ConfigWindow()
+#     w.show()
 
-mw.addonManager.setConfigAction(__name__, show_new_window)
-
-
+# mw.addonManager.setConfigAction(__name__, show_new_window)
 
 
 # ------------------------------------------------------------------------------
-
+# ------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
 
 # send list of languages to js on request
 
 from aqt.gui_hooks import webview_did_receive_js_message
 from typing import Any, Tuple
 
+import json
+
 def on_webview_did_receive_js_message(
     handled: Tuple[bool, Any],
     message: str,
     context: Any):
 
-    if message == "code_lang_html":
-        output = ""
-        for key, value in config['code languages'].items():
-            output += f'<button class="btn dropdown-item svelte-u5csu6 btn-day" onclick="addPre(\'{value}\');">{key}</button>\n'
-
-        return (True, output)
-
-    elif message == "get_config":
+    if message == "get_config":
         output = json.dumps(config)
         return (True, output)
 
     else:
         return handled
-
 
 
 webview_did_receive_js_message.append(on_webview_did_receive_js_message)

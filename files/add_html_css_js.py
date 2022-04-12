@@ -93,7 +93,8 @@ def on_webview_will_set_content(
     elif isinstance(context, DeckBrowser):
         web_content.css.append(
             f"{files_folder_rel}css/home.css")
-        if not(config["show 'studied cards today' in homescreen"]):
+        if config["hide 'studied cards today' in homescreen"] == True:
+            # showText(str(config["hide 'studied cards today' in homescreen"]))
             web_content.css.append(
                 f"{files_folder_rel}css/home_studiedToday.css")
     elif isinstance(context, BottomToolbar):
@@ -104,12 +105,13 @@ def on_webview_will_set_content(
         web_content.css.append(
             f"{files_folder_rel}css/reviewer_bottom.css")
     elif isinstance(context, Editor):
-        web_content.css.append(
-            f"{files_folder_rel}css/editor-window.css")
-        web_content.css.append(
-            f"{files_folder_rel}prism/prism.css")
-        web_content.js.append(
-            f"{files_folder_rel}prism/prism.js")
+        if config["modify editor appearance"] == True:
+            web_content.css.append(
+                f"{files_folder_rel}css/editor-window.css")
+            web_content.css.append(
+                f"{files_folder_rel}prism/prism.css")
+            web_content.js.append(
+                f"{files_folder_rel}prism/prism.js")
         
         # add script after html has loaded to make sure shadowroot is present
         web_content.head += '<script async id="editor-script"' + \
