@@ -25,16 +25,16 @@
 #
 # --------------------------------------------------------------------------- */
 
-const divContainingShadowRoot = (i) => {
-    return `.fields > div:nth-child(${i}) > div > div.editing-area > div > div.rich-text-editable`;
+const fieldShadowRootNode = (fieldNum) => {
+    const selector = (i) => `.fields > div:nth-child(${i}) > div > div.editing-area > div > div.rich-text-editable`;
+    return document.querySelector(selector(fieldNum)).shadowRoot;
 }
-
 
 function executeWrapSelectionInElems(...nodesForWrap) {
     const numTextBoxes = document.querySelector(".fields").childElementCount;
 
     for (let i = 1; i != (numTextBoxes + 1); i++) {
-        const node = document.querySelector(divContainingShadowRoot(i)).shadowRoot;
+        const node = fieldShadowRootNode(i);
         // use try in case nothing is selected
         try {
             const range = node.getSelection().getRangeAt(0);
@@ -116,7 +116,7 @@ function changeFields() {
         const fieldElemNodes = document.querySelector(".fields").childElementCount;
 
         for (let i = 1; i != (fieldElemNodes + 1); i++) {
-            const node = document.querySelector(divContainingShadowRoot(i)).shadowRoot;
+            const node = fieldShadowRootNode(i);
 
             // to prevent infite additions of editor.css when field is updated 
             // in browse, only add if not present
@@ -151,6 +151,7 @@ function changeTopButtons(config) {
         svgNode.setAttribute("viewBox", "0 0 640 640");
         svgNode.firstElementChild.setAttribute("d", path);
     }
+    const inlineTxtBtns = document.querySelector("#inlineFormatting > div > div:nth-child(1) > div");
 
     if (config["modify editor appearance"] == true) {
         // remove "..." from fields button and cards button
@@ -286,7 +287,7 @@ function changeTopButtons(config) {
     // -----------------
 
     // INLINE BUTTONS
-    const inlineTxtBtns = document.querySelector("#inlineFormatting > div > div:nth-child(1) > div");
+    
     const firstBtn = inlineTxtBtns.firstElementChild;
 
     // strikethough icon
@@ -364,20 +365,6 @@ function changeTopButtons(config) {
 
 
 document.body.onload = async () => {
-
-
-
-
-
-
-    // DO ASYNC AWAIT LOOP TO WAIT FOR AN ELEMENT TO APPEAR, THEN EXECUTE EVERYTHING
-
-
-
-
-
-
-    
     // 100 ms delay to allow the page to load
     await new Promise(resolve => setTimeout(resolve, 100));
     pycmd("get_config", (returnedString) => {
@@ -428,14 +415,3 @@ document.body.onload = async () => {
         }
     });
 }
-
-
-
-
-
-
-
-
-// -------------------------CHECK IF BUTTONS DISABLED
-
-// aria-expanded="false" VS disabled=""
