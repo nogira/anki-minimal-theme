@@ -135,11 +135,11 @@ function changeFields() {
 
     // -------------------------------------------------------------------------
 
-    const pinIcon = '<svg class="icn-dmns" width="13" height="13" viewBox="0 0 512 512" class="bi bi-pin-angle"><path d="m370.5 186.6-5.7-42.6h27.2c13.2 0 24-10.8 24-24v-96c0-13.2-10.8-24-24-24h-272c-13.2 0-24 10.8-24 24v96c0 13.2 10.8 24 24 24h27.2l-5.7 42.6c-47.9 32.8-77.5 84.1-77.5 141.4 0 13.2 10.8 24 24 24h144v104c0 .9.1 1.7.4 2.5l16 48c2.4 7.3 12.8 7.3 15.2 0l16-48c.3-.8.4-1.7.4-2.5v-104h144c13.2 0 24-10.8 24-24 0-57.3-29.6-108.6-77.5-141.4zm-256 117.4c8.3-38.5 35.6-70 71.5-87.8l16-120.2h-58v-48h224v48h-58l16 120.2c35.8 17.8 63.2 49.4 71.5 87.8z"/></svg>';
-    const pinElements = document.querySelectorAll("svg#mdi-pin-outline");
-    for (let i = 0; i != pinElements.length; i++) {
-            pinElements[i].parentElement.innerHTML = pinIcon;
-    }
+    // const pinIcon = '<svg class="icn-dmns" width="13" height="13" viewBox="0 0 512 512" class="bi bi-pin-angle"><path d="m370.5 186.6-5.7-42.6h27.2c13.2 0 24-10.8 24-24v-96c0-13.2-10.8-24-24-24h-272c-13.2 0-24 10.8-24 24v96c0 13.2 10.8 24 24 24h27.2l-5.7 42.6c-47.9 32.8-77.5 84.1-77.5 141.4 0 13.2 10.8 24 24 24h144v104c0 .9.1 1.7.4 2.5l16 48c2.4 7.3 12.8 7.3 15.2 0l16-48c.3-.8.4-1.7.4-2.5v-104h144c13.2 0 24-10.8 24-24 0-57.3-29.6-108.6-77.5-141.4zm-256 117.4c8.3-38.5 35.6-70 71.5-87.8l16-120.2h-58v-48h224v48h-58l16 120.2c35.8 17.8 63.2 49.4 71.5 87.8z"/></svg>';
+    // const pinElements = document.querySelectorAll("svg#mdi-pin-outline");
+    // for (let i = 0; i != pinElements.length; i++) {
+    //         pinElements[i].parentElement.innerHTML = pinIcon;
+    // }
 };
 
 function changeTopButtons(config) {
@@ -265,8 +265,9 @@ function changeTopButtons(config) {
                             "flex-flow: column var(--buttons-wrap);");
 
         const codeLangs = config["code block button languages"];
+        console.log(codeLangs);
         for (const item of codeLangs) {
-            const { codeLang, prismID } = item;
+            const { Name: codeLang, "PrismJS ID": prismID } = item;
             const codeLangElem = btnTemplate.cloneNode(true);
             const codeLangBtn = codeLangElem.querySelector("div > button");
             codeLangBtn.innerHTML = codeLang;
