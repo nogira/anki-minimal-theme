@@ -162,6 +162,19 @@ function changeTopButtons(config) {
             elem.innerHTML = elem.innerHTML.replace("...", "");
         }
 
+        console.log("test")
+
+        // fix italic button styling by encasing in div like the rest of the buttons
+        const italicDiv = document.createElement("div");
+        italicDiv.setAttribute("style", "display: contents; --border-left-radius:5px;")
+        console.log(inlineTxtBtns)
+        const italicBtn = inlineTxtBtns.querySelector('button[title="Italic text (⌘I)"]');
+        console.log(italicBtn)
+        italicDiv.appendChild(italicBtn);
+        inlineTxtBtns.insertBefore(italicDiv, inlineTxtBtns.lastElementChild);
+        
+        // console.log("test2")
+
         // uses 'font awesome' icons
         const icons = [
             {"path": "m426.52 302.78a119.76 119.76 0 00-82.52-206.78h-184a16 16 0 00-16 16v16a16 16 0 0016 16h16v352h-16a16 16 0 00-16 16v16a16 16 0 0016 16h208a128 128 0 00128-128c0-49.49-28.38-91.92-69.48-113.22zm-186.52-158.78h88a72 72 0 010 144h-88zm112 352h-112v-160h112a80 80 0 010 160z",
@@ -224,13 +237,6 @@ function changeTopButtons(config) {
                 // document.querySelector(icon.selector).parentElement.innerHTML = svgTagStart + icon.svg;
             }
         }
-
-        // fix italic button styling by encasing in div like the rest of the buttons
-        const italicDiv = document.createElement("div");
-        italicDiv.setAttribute("style", "display: contents; --border-left-radius:5px;")
-        const italicBtn = inlineTxtBtns.querySelector("button");
-        italicBtn.parentElement.insertBefore(italicDiv, italicBtn);
-        italicDiv.appendChild(italicBtn);
     }
 
     // -------------------------------ADD BUTTONS-------------------------------
@@ -265,7 +271,6 @@ function changeTopButtons(config) {
                             "flex-flow: column var(--buttons-wrap);");
 
         const codeLangs = config["code block button languages"];
-        console.log(codeLangs);
         for (const item of codeLangs) {
             const { Name: codeLang, "PrismJS ID": prismID } = item;
             const codeLangElem = btnTemplate.cloneNode(true);
@@ -367,7 +372,7 @@ function changeTopButtons(config) {
 
 document.body.onload = async () => {
     // 100 ms delay to allow the page to load
-    await new Promise(resolve => setTimeout(resolve, 100));
+    await new Promise(resolve => setTimeout(resolve, 200));
     pycmd("get_config", (returnedString) => {
         const config = JSON.parse(returnedString)
 
