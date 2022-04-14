@@ -1,5 +1,6 @@
 {
     "hide 'studied cards today' in homescreen": true,
+    "hide bottom buttons in homescreen": true,
     "code block button languages": [
         {"Name": "HTML", "PrismJS ID": "html"},
         {"Name": "CSS", "PrismJS ID": "css"},

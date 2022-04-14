@@ -1,5 +1,8 @@
 html {
     --button-shadow-color: hsla(0, 0%, 0%, 0.6);
+
+    --focus-border: rgba(0 0 0 0) !important;
+    --focus-shadow: rgba(0 0 0 0) !important;
 }
 
 html:not(.night-mode) {
@@ -47,9 +50,9 @@ button {
     height: 17px;
 }
 
-:focus {
+/* :focus {
     outline: none !important;
-}
+} */
 
 button:active {
     color: white;

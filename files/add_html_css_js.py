@@ -29,7 +29,7 @@ from .common_imports import *
 
 from aqt.webview import WebContent
 from aqt.toolbar import TopToolbar, BottomToolbar
-from aqt.deckbrowser import DeckBrowser
+from aqt.deckbrowser import DeckBrowser, DeckBrowserBottomBar
 from aqt.reviewer import ReviewerBottomBar
 from aqt.editor import Editor
 from aqt.gui_hooks import webview_will_set_content
@@ -97,10 +97,10 @@ def on_webview_will_set_content(
             # showText(str(config["hide 'studied cards today' in homescreen"]))
             web_content.css.append(
                 f"{files_folder_rel}css/home_studiedToday.css")
-    elif isinstance(context, BottomToolbar):
-        # this one doesnt work for some reason
-        web_content.css.append(
-            f"{files_folder_rel}css/bottom_toolbar.css")
+    elif isinstance(context, DeckBrowserBottomBar):
+        if config["hide bottom buttons in homescreen"] == True:
+            web_content.css.append(
+                f"{files_folder_rel}css/bottom_toolbar.css")
     elif isinstance(context, ReviewerBottomBar):
         web_content.css.append(
             f"{files_folder_rel}css/reviewer_bottom.css")
