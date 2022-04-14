@@ -1,9 +1,8 @@
-
 /* ------------------------------------------------------------------------------
 #
 # MIT License
 #
-# Copyright (c) 2021 nogira
+# Copyright (c) 2021-2022 nogira
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -25,15 +24,29 @@
 #
 # --------------------------------------------------------------------------- */
 
-
 const fieldShadowRootNode = (fieldNum) => {
+    /*
+    return shadowroot node of field number fieldNum
+    */
     const selector = (i) => `.fields > div:nth-child(${i}) > div > div.editing-area > div > div.rich-text-editable`;
     return document.querySelector(selector(fieldNum)).shadowRoot;
 }
 
-function wrapSelectionInElems(...arr){
+function wrapSelectionInElems(...arr) {
+    /*
+    wrap the current text selection in the input elements
 
-    // prepare nodes for wrap
+    example input:
+        wrapSelectionInElems(
+            "pre",
+            ["code", {"class": "lang-js", "id": "code-block"}],
+        );
+
+    output:
+        <pre><code class="lang-js" id="code-block">text selection</code></pre>
+    */
+
+    // --- prepare nodes for wrap ---
 
     const elemsForWrap = [];
     for (const elem of arr) {
@@ -50,10 +63,11 @@ function wrapSelectionInElems(...arr){
         }
     }
 
-    // wrap selection in nodes
+    // --- wrap selection in nodes ---
 
     const numTextFields = document.querySelector(".fields").childElementCount;
 
+    // loop through text fields until selection is found
     for (let i = 1; i < (numTextFields + 1); i++) {
         // because selection is in shadowroot, the only way to access the 
         // selection is by using the shadowroot as the seleciton node
@@ -91,34 +105,29 @@ function wrapSelectionInElems(...arr){
     }
 }
 
-function addPre(lang) {
-    wrapSelectionInElems("pre", ["code", {"class": `lang-${lang}`}]);
-}
-
-// add editor.css to each editor field (have to make sure its within shadowroot)
 function changeFields() {
-    {
-        // get src of editor_theme.js script then modify that path to get path 
-        // of editor.css
-        const scriptUrl = document.querySelector("#editor-script").src; //.prop("src")
-        const newPath = scriptUrl.replace("js/editor_theme.js", "css/editor.css");
+    /*
+    add editor.css to each editor field (have to make sure its within shadowroot)
+    */
 
-        const fieldElemNodes = document.querySelector(".fields").childElementCount;
+    // get src attr of editor_theme.js script then modify that path to get path 
+    // of editor.css
+    const scriptUrl = document.querySelector("#editor-script").src;
+    const cssPath = scriptUrl.replace("js/editor_theme.js", "css/editor.css");
 
-        for (let i = 1; i != (fieldElemNodes + 1); i++) {
-            const node = fieldShadowRootNode(i);
+    const fieldElemNodes = document.querySelector(".fields").childElementCount;
+    for (let i = 1; i != (fieldElemNodes + 1); i++) {
+        const node = fieldShadowRootNode(i);
 
-            // to prevent infite additions of editor.css when field is updated 
-            // in browse, only add if not present
-            // if not present, this = null
-            const cssElemPresent = node.querySelector(`[href="${newPath}"]`);
-
-            if (!cssElemPresent) {
-                const newCSSElem = document.createElement("link");
-                newCSSElem.setAttribute("rel", "stylesheet");
-                newCSSElem.setAttribute("href", newPath);
-                node.appendChild(newCSSElem);
-            }
+        // to prevent infite additions of editor.css when field is updated 
+        // in browse, only add if not present
+        // if not present, this = null
+        const cssElemPresent = node.querySelector(`[href="${cssPath}"]`);
+        if (!cssElemPresent) {
+            const newCSSElem = document.createElement("link");
+            newCSSElem.setAttribute("rel", "stylesheet");
+            newCSSElem.setAttribute("href", cssPath);
+            node.appendChild(newCSSElem);
         }
     }
 
@@ -263,8 +272,8 @@ function changeTopButtons(config) {
             const codeLangBtn = codeLangElem.querySelector("div > button");
             codeLangBtn.innerHTML = codeLang;
             codeLangBtn.setAttribute("title", "Lang: " + codeLang);
-            codeLangBtn.setAttribute("onclick", `addPre(\'${prismID}\');`);
-
+            codeLangBtn.setAttribute("onclick",
+                `wrapSelectionInElems("pre", ["code", {"class": "lang-${prismID}"}]);`);
             codeLangBtn.setAttribute("style", "margin-top: 2px;"
                                             + "padding-left: 3px;"
                                             + "padding-right: 3px;");
