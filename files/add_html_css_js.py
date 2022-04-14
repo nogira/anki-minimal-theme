@@ -108,10 +108,10 @@ def on_webview_will_set_content(
         if config["modify editor appearance"] == True:
             web_content.css.append(
                 f"{files_folder_rel}css/editor-window.css")
-            web_content.css.append(
-                f"{files_folder_rel}prism/prism.css")
-            web_content.js.append(
-                f"{files_folder_rel}prism/prism.js")
+            # web_content.css.append(
+            #     f"{files_folder_rel}prism/prism.css")
+            # web_content.js.append(
+            #     f"{files_folder_rel}prism/prism.js")
         
         # add script after html has loaded to make sure shadowroot is present
         web_content.head += '<script async id="editor-script"' + \

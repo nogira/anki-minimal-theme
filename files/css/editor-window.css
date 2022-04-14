@@ -44,25 +44,26 @@ nav {
 
 /*       FIELD       */
 
-div.label-container {
-    /* remove bottom dotted line */
-    border: none !important;
 
-    background-color: rgba(244,244,244,1) !important;
-}
 div.editor-field {
     /* remove line around edit fields */
     border: none !important;
 }
-
-span.fieldname {
+div.editor-field span.label-name {
     font-size: 13px;
 }
+div.editor-field > div.label-container {
+    /* remove bottom dotted line */
+    border: none !important;
 
-.field {
-    border: 1px solid var(--border-color);
+    /* remove background color */
+    background-color: var(--window-bg) !important;
+}
+/* div.editor-field > div.label-container, */
+div.editor-field > div.editing-area {
+    border: 0.5px solid hsl(0, 0%, 88%);
     border-radius: 3px;
 
     /* offset-x | offset-y | blur-radius | spread-radius | color */
-    box-shadow: inset 0px 2px 4px -2px rgba(0, 0, 0, 0.2);
+    box-shadow: inset 0px 1px 6px -2px rgba(0, 0, 0, 0.2);
 }

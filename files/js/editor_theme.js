@@ -25,84 +25,62 @@
 #
 # --------------------------------------------------------------------------- */
 
+
 const fieldShadowRootNode = (fieldNum) => {
     const selector = (i) => `.fields > div:nth-child(${i}) > div > div.editing-area > div > div.rich-text-editable`;
     return document.querySelector(selector(fieldNum)).shadowRoot;
 }
 
-function executeWrapSelectionInElems(...nodesForWrap) {
-    const numTextBoxes = document.querySelector(".fields").childElementCount;
+function wrapSelectionInElems(...arr){
 
-    for (let i = 1; i != (numTextBoxes + 1); i++) {
+    // prepare nodes for wrap
+
+    const nodesForWrap = [];
+    for (const elem of arr) {
+        if (typeof(elem) === "string") {
+            const node = document.createElement(elem);
+            nodesForWrap.unshift(node);
+        } else {
+            const [tag, attrs] = elem;
+            const node = document.createElement(tag);
+            for (const attr of Object.keys(attrs)) {
+                node.setAttribute(attr, attrs[attr])
+            }
+            nodesForWrap.unshift(node);
+        }
+    }
+
+    // wrap selection in nodes
+
+    const numTextFields = document.querySelector(".fields").childElementCount;
+
+    for (let i = 1; i < (numTextFields + 1); i++) {
         const node = fieldShadowRootNode(i);
-        // use try in case nothing is selected
-        try {
+        const selectionInField = node.getSelection().anchorNode;
+        if (selectionInField) {
             const range = node.getSelection().getRangeAt(0);
-
             // use try in case user tries to semi-overlap html tags which doesn't work
             try {
                 for (const nodeForWrap of nodesForWrap) {
                     range.surroundContents(nodeForWrap);
                 }
-                
-            } catch (e) {
-                alert(`Can't semi-overlap HTML tags!
-
-Illustrative Example:
-- Good
-  <bold>text</bold> <italic>text</italic>
-
-- Also Good
-  <bold><italic>text</italic></bold>text
-
-- BAD !!
-  <bold><italic>text</bold> text</italic>`)
-//    └──────────┘     └────────────┘
-//    │      └────────────┘       │
-//    └───────────────────────────┘
-//    │      └───────────┼────────────┘
-//    └──────────────────┘
+            } catch {
+                alert("Can't semi-overlap HTML tags!\n\n"
+                        + "Illustrative Example:\n"
+                        + "- Good\n"
+                        + "  <bold>text</bold> <italic>text</italic>\n\n"
+                        + "- Also Good\n"
+                        + "  <bold><italic>text</italic></bold>text\n\n"
+                        + "- BAD !!\n"
+                        + "  <bold><italic>text</bold> text</italic>");
             }
-        } catch (e) {/* do nothing on error */}
-    }
-}
-
-function createNode(elem, ...attrs) {
-    const node = document.createElement(elem);
-    if (attrs) {
-        for (const attr of attrs) {
-            node.setAttribute(attr[0], attr[1])
+            break;
         }
     }
-    return node
-}
-//                           one elem per arg, with each arg being an array. 
-//                           elems is array
-function wrapSelectionInElems(...elems) {
-    const nodesForWrap = [];
-    // get each elem from array elems, 
-    for (const elem of elems) {
-        // separate the tag from attributes, with each set of attribute being 
-        // an array, thus, attrs is an array of arrays
-        // ["tag", ["attr1", "val1"], ["attr2", "val2"]]
-        const [tag, ...attrs] = elem;
-        // tag = "tag"
-        // attrs = [["attr1", "val1"], ["attr2", "val2"]]
-        // add to array in reverse so order of wrapping is correct
-        //                                 convert attrs array to args
-        nodesForWrap.unshift(createNode(tag, ...attrs));
-    }
-    executeWrapSelectionInElems(...nodesForWrap);
-}
-
-function wrapSelectionInElem(elem, ...attrs) {
-    const nodeForWrap = createNode(elem, ...attrs);
-    // console.log(nodeForWrap)
-    executeWrapSelectionInElems(nodeForWrap);
 }
 
 function addPre(lang) {
-    wrapSelectionInElems(["pre"], ["code", ["class", `lang-${lang}`]]);
+    wrapSelectionInElems("pre", ["code", {"class": `lang-${lang}`}]);
 }
 
 // add editor.css to each editor field (have to make sure its within shadowroot)
@@ -128,12 +106,14 @@ function changeFields() {
                 newCSSElem.setAttribute("rel", "stylesheet");
                 newCSSElem.setAttribute("href", newPath);
                 node.appendChild(newCSSElem);
-                // node.insertBefore(newCSSElem, node.childNodes[1]);
             }
         }
     }
 
     // -------------------------------------------------------------------------
+
+    // this was causing editor to glitch, also the editor now swaps between two 
+    // svgs, so this doesn't really work anyway anymore
 
     // const pinIcon = '<svg class="icn-dmns" width="13" height="13" viewBox="0 0 512 512" class="bi bi-pin-angle"><path d="m370.5 186.6-5.7-42.6h27.2c13.2 0 24-10.8 24-24v-96c0-13.2-10.8-24-24-24h-272c-13.2 0-24 10.8-24 24v96c0 13.2 10.8 24 24 24h27.2l-5.7 42.6c-47.9 32.8-77.5 84.1-77.5 141.4 0 13.2 10.8 24 24 24h144v104c0 .9.1 1.7.4 2.5l16 48c2.4 7.3 12.8 7.3 15.2 0l16-48c.3-.8.4-1.7.4-2.5v-104h144c13.2 0 24-10.8 24-24 0-57.3-29.6-108.6-77.5-141.4zm-256 117.4c8.3-38.5 35.6-70 71.5-87.8l16-120.2h-58v-48h224v48h-58l16 120.2c35.8 17.8 63.2 49.4 71.5 87.8z"/></svg>';
     // const pinElements = document.querySelectorAll("svg#mdi-pin-outline");
@@ -162,18 +142,12 @@ function changeTopButtons(config) {
             elem.innerHTML = elem.innerHTML.replace("...", "");
         }
 
-        console.log("test")
-
         // fix italic button styling by encasing in div like the rest of the buttons
+        const range = document.createRange();
         const italicDiv = document.createElement("div");
         italicDiv.setAttribute("style", "display: contents; --border-left-radius:5px;")
-        console.log(inlineTxtBtns)
-        const italicBtn = inlineTxtBtns.querySelector('button[title="Italic text (⌘I)"]');
-        console.log(italicBtn)
-        italicDiv.appendChild(italicBtn);
-        inlineTxtBtns.insertBefore(italicDiv, inlineTxtBtns.lastElementChild);
-        
-        // console.log("test2")
+        range.selectNode(document.querySelector('button[title="Italic text (⌘I)"]'));
+        range.surroundContents(italicDiv);
 
         // uses 'font awesome' icons
         const icons = [
@@ -250,7 +224,7 @@ function changeTopButtons(config) {
 
         // clone paraDropdown to create codeDropdown
         const codeDropdown = document.querySelector('button[title="Center"]')
-            .parentNode.parentNode.parentNode.parentNode.parentNode//.cloneNode(true); cloning removes event listeners. this causes text to deselect when button is pressed and cant find a way to stop it
+            .parentNode.parentNode.parentNode.parentNode.parentNode//.cloneNode(true); cloning removes event listeners. this causes text to deselect when button is pressed and cant find a way to stop it. so instead just replacing contents of existing button
         codeDropdown.setAttribute("id", "codeDropdown");
         // change icon
         const codeSVG = codeDropdown.querySelector("div > button > span > svg");
@@ -304,7 +278,7 @@ function changeTopButtons(config) {
         addPathToSVG(hideSVG, hideIconPath);
         const hideBtn = hideElem.querySelector("button");
         hideBtn.setAttribute("title", "Strikethrough");
-        hideBtn.setAttribute("onclick", "wrapSelectionInElem(`s`)");
+        hideBtn.setAttribute("onclick", "wrapSelectionInElems('s')");
         hideBtn.addEventListener("mousedown", event => event.preventDefault());
         inlineTxtBtns.appendChild(hideElem);
     }
@@ -316,42 +290,68 @@ function changeTopButtons(config) {
         addPathToSVG(codeSVG, codeIconPath);
         const codeBtn = codeElem.querySelector("button")
         codeBtn.setAttribute("title", "Inline Code");
-        codeBtn.setAttribute("onclick", "wrapSelectionInElem(`code`)");
+        codeBtn.setAttribute("onclick", "wrapSelectionInElems('code')");
         codeBtn.addEventListener("mousedown", event => event.preventDefault());
         inlineTxtBtns.appendChild(codeElem);
     }
 
     // -----------------
 
-    // var node4 = document.querySelector("div#inlineFormatting div.btn-group.svelte-1x2qjkh");
-
-    // button4 = document.createElement("div");
-    // button4.setAttribute("class", " svelte-13ncvxj");
-    // tooltip_icon = '<svg aria-hidden="true" focusable="false" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icn-dmns"><path d="M448 0H64C28.7 0 0 28.7 0 64v288c0 35.3 28.7 64 64 64h96v84c0 7.1 5.8 12 12 12 2.4 0 4.9-.7 7.1-2.4L304 416h144c35.3 0 64-28.7 64-64V64c0-35.3-28.7-64-64-64zm16 352c0 8.8-7.2 16-16 16H288l-12.8 9.6L208 428v-60H64c-8.8 0-16-7.2-16-16V64c0-8.8 7.2-16 16-16h384c8.8 0 16 7.2 16 16v288zM128 176c-17.7 0-32 14.3-32 32s14.3 32 32 32 32-14.3 32-32-14.3-32-32-32zm128 0c-17.7 0-32 14.3-32 32s14.3 32 32 32 32-14.3 32-32-14.3-32-32-32zm128 0c-17.7 0-32 14.3-32 32s14.3 32 32 32 32-14.3 32-32-14.3-32-32-32z"/></svg>'
-
-    // button4.innerHTML = `<button class="btn btn-day svelte-9lxpor" title="Inline Code" dropdown="false" tabindex="-1" style="--icon-size: 75%;" onclick="addT();" aria-expanded="false">
-    //                         <span style="--width-multiplier: 1;" class="svelte-9lxpor">
-    //                             ${tooltip_icon}
-    //                         </span>
-    //                     </button>`
-
-    // node4.appendChild(button4);
-
-
-
-    // -----------------
-
     // REMOVE BUTTONS
 
-    // sending message to python config file to send back all the list of code 
-    // languages in the config file
-
-
-    if (config["remove editor button: unordered list"] == true) {
-        document.querySelector('[title="Unordered list (⌘,)"]').parentNode.remove();
-    }
-    if (config["remove editor button: unordered list"] == true) {
-        document.querySelector('[title="Ordered list (⌘.)"]').parentNode.remove();
+    const btnsToRemove = [
+        {
+            configID:"remove editor button: bold",
+            btnTitle:"Bold text (⌘B)"
+        },
+        {
+            configID:"remove editor button: italic",
+            btnTitle:"Italic text (⌘I)"
+        },
+        {
+            configID:"remove editor button: underline",
+            btnTitle:"Underline text (⌘U)"
+        },
+        {
+            configID:"remove editor button: superscript",
+            btnTitle:"Superscript (⌘=)"
+        },
+        {
+            configID:"remove editor button: subscript",
+            btnTitle:"Subscript (⌘⇧=)"
+        },
+        {
+            configID:"remove editor button: text color",
+            btnTitle:"Change color (F8)"
+        },
+        {
+            configID:"remove editor button: highlight",
+            btnTitle:"Text highlight color"
+        },
+        {
+            configID:"remove editor button: unordered list",
+            btnTitle:"Unordered list (⌘,)"
+        },
+        {
+            configID:"remove editor button: ordered list",
+            btnTitle:"Ordered list (⌘.)"
+        },
+        // removing these 2 breaks the editor for some reason, so decided to 
+        // swap all to turning invisible instead of removing
+        {
+            configID:"remove editor button: media file attachments",
+            btnTitle:"Attach pictures/audio/video (F3)"
+        },
+        {
+            configID:"remove editor button: audio recording",
+            btnTitle:"Record audio (F5)"
+        },
+    ]
+    for (const item of btnsToRemove) {
+        if (config[item.configID] == true) {
+            document.querySelector(`button[title="${item.btnTitle}"]`).parentNode
+                .style.display = "none";
+        }
     }
     // if (/*false &&*/ config.editorButtonPara == false) {
     //     const parent = document.querySelector("#blockFormatting > div > div.dynamically-slottable.svelte-8in7my")
@@ -361,18 +361,16 @@ function changeTopButtons(config) {
     //         parent.remove()
     //     }
     // }
-
-
-    // removing these breaks the editor for some reason
-    // $('[title="Attach pictures/audio/video (F3)"]').parent().remove();
-    // $('[title="Record audio (F5)"]').parent().remove();
+    if (config["remove editor button: latex equations"]) {
+        document.querySelector("span.latex-button").parentNode
+            .style.display = "none";
+    }
 }
-
-
 
 document.body.onload = async () => {
     // 100 ms delay to allow the page to load
     await new Promise(resolve => setTimeout(resolve, 200));
+    // sending message to python to send back the config file
     pycmd("get_config", (returnedString) => {
         const config = JSON.parse(returnedString)
 
