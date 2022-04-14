@@ -35,18 +35,18 @@ function wrapSelectionInElems(...arr){
 
     // prepare nodes for wrap
 
-    const nodesForWrap = [];
+    const elemsForWrap = [];
     for (const elem of arr) {
         if (typeof(elem) === "string") {
             const node = document.createElement(elem);
-            nodesForWrap.unshift(node);
+            elemsForWrap.unshift(node);
         } else {
             const [tag, attrs] = elem;
             const node = document.createElement(tag);
             for (const attr of Object.keys(attrs)) {
                 node.setAttribute(attr, attrs[attr])
             }
-            nodesForWrap.unshift(node);
+            elemsForWrap.unshift(node);
         }
     }
 
@@ -55,16 +55,28 @@ function wrapSelectionInElems(...arr){
     const numTextFields = document.querySelector(".fields").childElementCount;
 
     for (let i = 1; i < (numTextFields + 1); i++) {
+        // because selection is in shadowroot, the only way to access the 
+        // selection is by using the shadowroot as the seleciton node
         const node = fieldShadowRootNode(i);
         const selectionInField = node.getSelection().anchorNode;
         if (selectionInField) {
-            const range = node.getSelection().getRangeAt(0);
-            // use try in case user tries to semi-overlap html tags which doesn't work
+            const selection = node.getSelection();
+            const range = selection.getRangeAt(0);
+
+            // use try-catch in case user tries to semi-overlap html tags which 
+            // doesn't work
             try {
-                for (const nodeForWrap of nodesForWrap) {
-                    range.surroundContents(nodeForWrap);
+                // declaring elem here so i can use it to reselect the range 
+                // after elems added
+                let elem;
+                for (elem of elemsForWrap) {
+                    range.surroundContents(elem);
                 }
-            } catch {
+                // the selection gets removed after wrapping, so we need to 
+                // re-select the text
+                selection.setBaseAndExtent(elem,0 ,elem,1);
+            } catch (e) {
+                // alert(e);
                 alert("Can't semi-overlap HTML tags!\n\n"
                         + "Illustrative Example:\n"
                         + "- Good\n"
