@@ -388,9 +388,10 @@ function changeTopButtons(config) {
     }
 }
 
-document.body.onload = async () => {
-    // 100 ms delay to allow the page to load
-    await new Promise(resolve => setTimeout(resolve, 200));
+async function main() {
+    // block for 1 ms to allow other scripts to load so this script can access 
+    // all their functions
+    await new Promise(resolve => setTimeout(resolve, 1));
     // sending message to python to send back the config file
     pycmd("get_config", (returnedString) => {
         const config = JSON.parse(returnedString)
@@ -440,3 +441,9 @@ document.body.onload = async () => {
         }
     });
 }
+
+document.addEventListener('readystatechange', event => { 
+    if (event.target.readyState === "complete") {
+        main();
+    }
+});
