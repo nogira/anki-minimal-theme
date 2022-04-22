@@ -6,7 +6,7 @@
   ✨ Install Code: <b>867316254</b> ✨
 </div>
 
-<img src="https://imgur.com/EJ4ZA8k.png"/>
+<img src="https://i.imgur.com/ZUM8q5C.png"/>
 
 <br>
 
